@@ -21,14 +21,14 @@ public class ArrayStorage {
 
     public Resume get(String uuid) {
         for (Resume resume : storage) {
-            if (Objects.equals(resume, uuid)) return resume;
+            if (resume != null && resume.equals(uuid)) return resume;
         }
         return null;
     }
 
     public void delete(String uuid) {
         for (int i = 0; i < 10000; i++) {
-            if (Objects.equals(storage[i], uuid)) {
+            if (storage[i] != null && storage[i].uuid.equals(uuid)) {
                 for (int j = i + 1; j < 10000; j++) {
                     storage[j - 1] = storage[j];
                     if (storage[j] == null) break;
