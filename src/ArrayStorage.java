@@ -5,7 +5,6 @@ public class ArrayStorage {
     Resume[] storage = new Resume[10000];
 
     void clear() {
-
     }
 
     void save(Resume r) {
