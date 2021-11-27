@@ -20,7 +20,7 @@ public class ArrayStorage {
 
     public Resume get(String uuid) {
         for (Resume resume : storage) {
-            if (resume != null && resume.equals(uuid)) return resume;
+            if (resume != null && resume.uuid.equals(uuid)) return resume;
         }
         return null;
     }
