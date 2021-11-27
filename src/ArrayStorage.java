@@ -8,9 +8,8 @@ public class ArrayStorage {
 
     public void clear() {
         for (int i = 0; i < 10000; i++) {
-            if (storage[i] != null) {
-                storage[i] = null;
-            } else break;
+            if (storage[i] != null) storage[i] = null;
+            else break;
         }
     }
 
@@ -46,9 +45,7 @@ public class ArrayStorage {
 
     public int size() {
         for (int i = 0; i < 10000; i++) {
-            if (storage[i] == null) {
-                return i;
-            }
+            if (storage[i] == null) return i;
         }
         return 10000;
     }
