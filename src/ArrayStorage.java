@@ -31,7 +31,6 @@ public class ArrayStorage {
                     storage[j - 1] = storage[j];
                     if (storage[j] == null) break;
                 }
-                break;
             }
         }
     }
