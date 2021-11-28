@@ -12,6 +12,7 @@ public class ArrayStorage {
             if (storage[i] != null) storage[i] = null;
             else break;
         }
+        size = 0;
     }
 
     public void save(Resume r) {
@@ -36,6 +37,7 @@ public class ArrayStorage {
                 break;
             }
         }
+        size--;
     }
 
     /**
