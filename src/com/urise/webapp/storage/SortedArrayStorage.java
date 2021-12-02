@@ -13,27 +13,31 @@ public class SortedArrayStorage extends AbstractArrayStorage {
     }
 
     @Override
-    public void clear() {
-
-    }
-
-    @Override
-    public void update(Resume r) {
-
-    }
-
-    @Override
     public void save(Resume r) {
-
+        int index = getIndex(r.getUuid());
+        if (index >= 0) {
+            System.out.println("ERROR: resume " + r.getUuid() + " already exists");
+        } else if (size >= STORAGE_LIMIT) {
+            System.out.println("ERROR: storage overflow");
+        } else {
+            for (int i = size; i > -(index + 1); i--) {
+                storage[i] = storage[i - 1];
+            }
+            storage[-(index + 1)] = r;
+            size++;
+        }
     }
 
     @Override
     public void delete(String uuid) {
-
-    }
-
-    @Override
-    public Resume[] getAll() {
-        return new Resume[0];
+        int index = getIndex(uuid);
+        if (index < 0) {
+            System.out.println("ERROR: resume " + uuid + " not exists");
+        } else {
+            for (int i = index; i < size - 1; i++) {
+                storage[i] = storage[i + 1];
+            }
+            size--;
+        }
     }
 }
