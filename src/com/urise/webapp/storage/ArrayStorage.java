@@ -15,26 +15,12 @@ public class ArrayStorage extends AbstractArrayStorage {
     }
 
     @Override
-    public void save(Resume r) {
-        if (getIndex(r.getUuid()) >= 0) {
-            System.out.println("ERROR: resume " + r.getUuid() + " already exists");
-        } else if (size >= STORAGE_LIMIT) {
-            System.out.println("ERROR: storage overflow");
-        } else {
-            storage[size] = r;
-            size++;
-        }
+    protected void insertResume(Resume r, int index) {
+        storage[size] = r;
     }
 
     @Override
-    public void delete(String uuid) {
-        int index = getIndex(uuid);
-        if (index < 0) {
-            System.out.println("ERROR: resume " + uuid + " not exists");
-        } else {
-            storage[index] = storage[size - 1];
-            storage[size - 1] = null;
-            size--;
-        }
+    protected void eraseResume(int index) {
+        storage[index] = storage[size - 1];
     }
 }
