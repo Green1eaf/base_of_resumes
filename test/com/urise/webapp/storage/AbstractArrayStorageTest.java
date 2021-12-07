@@ -75,7 +75,7 @@ public class AbstractArrayStorageTest {
         }
         storage.clear();
         int count = 0;
-        while(true) {
+        while (true) {
             storage.save(new Resume(Integer.toString(count++)));
         }
     }
