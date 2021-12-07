@@ -11,11 +11,15 @@ import org.junit.Test;
 import java.util.Arrays;
 
 public class AbstractArrayStorageTest {
-    private Storage storage = new ArrayStorage();
+    private Storage storage;
 
     private static final String UUID_1 = "uuid1";
     private static final String UUID_2 = "uuid2";
     private static final String UUID_3 = "uuid3";
+
+    public AbstractArrayStorageTest(Storage storage) {
+        this.storage = storage;
+    }
 
     @Before
     public void setUp() {
@@ -29,10 +33,6 @@ public class AbstractArrayStorageTest {
     public void size() {
         Assert.assertEquals(3, storage.size());
         storage.clear();
-        Assert.assertEquals(0, storage.size());
-        storage.save(new Resume(UUID_1));
-        Assert.assertEquals(1, storage.size());
-        storage.delete(UUID_1);
         Assert.assertEquals(0, storage.size());
     }
 
@@ -57,9 +57,6 @@ public class AbstractArrayStorageTest {
         Resume[] testStorage = {new Resume(UUID_1), new Resume(UUID_2), new Resume(UUID_3)};
         Assert.assertEquals(true, Arrays.equals(storage.getAll(), testStorage));
         storage.delete(UUID_3);
-        Assert.assertEquals(false, Arrays.equals(storage.getAll(), testStorage));
-        storage.save(new Resume(UUID_3));
-        storage.save(new Resume("uuid4"));
         Assert.assertEquals(false, Arrays.equals(storage.getAll(), testStorage));
     }
 
