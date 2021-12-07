@@ -71,10 +71,14 @@ public class AbstractArrayStorageTest {
             Assert.assertNotEquals("", e.getMessage());
         }
         storage.clear();
-        int count = 0;
-        while (true) {
-            storage.save(new Resume(Integer.toString(count++)));
+        try {
+            for(int i = 0; i < AbstractArrayStorage.STORAGE_LIMIT; i++) {
+                storage.save(new Resume());
+            }
+        } catch (StorageException e) {
+            Assert.fail();
         }
+        storage.save(new Resume());
     }
 
     @Test(expected = NotExistStorageException.class)
