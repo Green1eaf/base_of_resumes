@@ -46,9 +46,9 @@ public abstract class AbstractArrayStorageTest {
     @Test
     public void update() {
         Resume r4 = new Resume(UUID_3);
-        assertEquals(false, storage.get(UUID_3) == r4);
+        Assert.assertNotSame(storage.get(UUID_3), r4);
         storage.update(r4);
-        assertEquals(true, storage.get(UUID_3) == r4);
+        Assert.assertSame(storage.get(UUID_3), r4);
     }
 
     @Test(expected = NotExistStorageException.class)
@@ -58,8 +58,8 @@ public abstract class AbstractArrayStorageTest {
 
     @Test
     public void getAll() {
-        Resume[] testStorage = {new Resume(UUID_1), new Resume(UUID_2), new Resume(UUID_3)};
-        Assert.assertArrayEquals(testStorage, storage.getAll());
+        Resume[] expectedResumes = {new Resume(UUID_1), new Resume(UUID_2), new Resume(UUID_3)};
+        Assert.assertArrayEquals(expectedResumes, storage.getAll());
     }
 
     @Test
