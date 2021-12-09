@@ -2,17 +2,18 @@ package com.urise.webapp.storage;
 
 import com.urise.webapp.model.Resume;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
 public class ListStorage extends AbstractStorage {
-    List<Resume> listStorage = new LinkedList<>();
+    private List<Resume> listStorage = new LinkedList<>();
 
     @Override
     protected final int getIndex(String uuid) {
         int index = 0;
         for (Resume r : listStorage) {
-            if (r.getUuid() == uuid) return index;
+            if (r.getUuid().equals(uuid)) return index;
             index++;
         }
         return -1;
@@ -24,12 +25,12 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    protected final void eraseResume(String uuid, int index) {
+    protected final void eraseResume(int index) {
         listStorage.remove(index);
     }
 
     @Override
-    protected final Resume getResume(String uuid, int index) {
+    protected final Resume getResume(int index) {
         return listStorage.get(index);
     }
 
@@ -46,16 +47,15 @@ public class ListStorage extends AbstractStorage {
     @Override
     public final void clear() {
         listStorage.clear();
-        size = 0;
     }
 
     @Override
     public final Resume[] getAll() {
-        Resume[] result = new Resume[size];
-        int index = 0;
-        for (Resume r : listStorage) {
-            result[index++] = r;
-        }
-        return result;
+        return listStorage.toArray(new Resume[0]);
+    }
+
+    @Override
+    public int size() {
+        return listStorage.size();
     }
 }

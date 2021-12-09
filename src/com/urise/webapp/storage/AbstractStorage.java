@@ -6,15 +6,14 @@ import com.urise.webapp.exception.StorageException;
 import com.urise.webapp.model.Resume;
 
 public abstract class AbstractStorage implements Storage {
-    protected int size = 0;
 
     protected abstract int getIndex(String uuid);
 
     protected abstract void insertResume(Resume r, int index);
 
-    protected abstract void eraseResume(String uuid, int index);
+    protected abstract void eraseResume(int index);
 
-    protected abstract Resume getResume(String uuid, int index);
+    protected abstract Resume getResume(int index);
 
     protected abstract void updateResume(Resume r, int index);
 
@@ -23,48 +22,29 @@ public abstract class AbstractStorage implements Storage {
     @Override
     public final void update(Resume r) {
         int index = getIndex(r.getUuid());
-        if (index < 0) {
-            throw new NotExistStorageException(r.getUuid());
-        } else {
-            updateResume(r, index);
-        }
+        if (index < 0) throw new NotExistStorageException(r.getUuid());
+        updateResume(r, index);
     }
 
     @Override
     public final void save(Resume r) {
         int index = getIndex(r.getUuid());
-        if (index >= 0) {
-            throw new ExistStorageException(r.getUuid());
-        } else if (isOverflow()) {
-            throw new StorageException("Storage overflow", r.getUuid());
-        } else {
-            insertResume(r, index);
-            size++;
-        }
+        if (index >= 0) throw new ExistStorageException(r.getUuid());
+        if (isOverflow()) throw new StorageException("Storage overflow", r.getUuid());
+        insertResume(r, index);
     }
 
     @Override
     public final Resume get(String uuid) {
         int index = getIndex(uuid);
-        if (index < 0) {
-            throw new NotExistStorageException(uuid);
-        }
-        return getResume(uuid, index);
+        if (index < 0) throw new NotExistStorageException(uuid);
+        return getResume(index);
     }
 
     @Override
     public final void delete(String uuid) {
         int index = getIndex(uuid);
-        if (index < 0) {
-            throw new NotExistStorageException(uuid);
-        } else {
-            eraseResume(uuid, index);
-            size--;
-        }
-    }
-
-    @Override
-    public final int size() {
-        return size;
+        if (index < 0) throw new NotExistStorageException(uuid);
+        eraseResume(index);
     }
 }
