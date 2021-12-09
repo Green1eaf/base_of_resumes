@@ -13,8 +13,8 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     protected int size = 0;
 
     @Override
-    protected final Resume getResume(int index) {
-        return storage[index];
+    protected final Resume getResume(String uuid) {
+        return storage[getIndex(uuid)];
     }
 
     @Override
@@ -23,7 +23,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    protected final boolean isOverflow(){
+    protected final boolean isOverflow() {
         return size == STORAGE_LIMIT;
     }
 
@@ -41,7 +41,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         return Arrays.copyOf(storage, size);
     }
 
-    public int size() {
+    public final int size() {
         return size;
     }
 }

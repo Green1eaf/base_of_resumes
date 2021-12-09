@@ -20,7 +20,8 @@ public class SortedArrayStorage extends AbstractArrayStorage {
     }
 
     @Override
-    protected final void eraseResume(int index) {
+    protected final void eraseResume(String uuid) {
+        int index = getIndex(uuid);
         int numMoved = size - 1 - index;
         if (numMoved > 0) {
             System.arraycopy(storage, index + 1, storage, index, numMoved);

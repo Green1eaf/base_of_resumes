@@ -6,7 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class ListStorage extends AbstractStorage {
-    private List<Resume> listStorage = new LinkedList<>();
+    private final List<Resume> listStorage = new LinkedList<>();
 
     @Override
     protected final int getIndex(String uuid) {
@@ -24,13 +24,13 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    protected final void eraseResume(int index) {
-        listStorage.remove(index);
+    protected final void eraseResume(String uuid) {
+        listStorage.remove(getIndex(uuid));
     }
 
     @Override
-    protected final Resume getResume(int index) {
-        return listStorage.get(index);
+    protected final Resume getResume(String uuid) {
+        return listStorage.get(getIndex(uuid));
     }
 
     @Override
@@ -54,7 +54,7 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    public int size() {
+    public final int size() {
         return listStorage.size();
     }
 }
