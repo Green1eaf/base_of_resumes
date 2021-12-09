@@ -6,45 +6,41 @@ import com.urise.webapp.exception.StorageException;
 import com.urise.webapp.model.Resume;
 
 public abstract class AbstractStorage implements Storage {
+    protected abstract Object getIndex(String uuid);
 
-    protected abstract int getIndex(String uuid);
+    protected abstract void insertResume(Resume r, Object index);
 
-    protected abstract void insertResume(Resume r, int index);
+    protected abstract void eraseResume(Object uuid);
 
-    protected abstract void eraseResume(String uuid);
+    protected abstract Resume getResume(Object uuid);
 
-    protected abstract Resume getResume(String uuid);
-
-    protected abstract void updateResume(Resume r, int index);
-
-    protected abstract boolean isOverflow();
+    protected abstract void updateResume(Resume r, Object index);
 
     @Override
     public final void update(Resume r) {
-        int index = getIndex(r.getUuid());
+        int index = (Integer) getIndex(r.getUuid());
         if (index < 0) throw new NotExistStorageException(r.getUuid());
         updateResume(r, index);
     }
 
     @Override
-    public final void save(Resume r) {
-        int index = getIndex(r.getUuid());
+    public void save(Resume r) {
+        int index = (Integer) getIndex(r.getUuid());
         if (index >= 0) throw new ExistStorageException(r.getUuid());
-        if (isOverflow()) throw new StorageException("Storage overflow", r.getUuid());
         insertResume(r, index);
     }
 
     @Override
     public final Resume get(String uuid) {
-        int index = getIndex(uuid);
+        int index = (Integer) getIndex(uuid);
         if (index < 0) throw new NotExistStorageException(uuid);
         return getResume(uuid);
     }
 
     @Override
     public final void delete(String uuid) {
-        int index = getIndex(uuid);
+        int index = (Integer) getIndex(uuid);
         if (index < 0) throw new NotExistStorageException(uuid);
-        eraseResume(uuid);
+        eraseResume(index);
     }
 }
