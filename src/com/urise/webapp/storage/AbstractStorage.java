@@ -6,8 +6,6 @@ import com.urise.webapp.exception.StorageException;
 import com.urise.webapp.model.Resume;
 
 public abstract class AbstractStorage implements Storage {
-    protected static final int STORAGE_LIMIT = 10000;
-
     protected int size = 0;
 
     protected abstract int getIndex(String uuid);
@@ -19,6 +17,8 @@ public abstract class AbstractStorage implements Storage {
     protected abstract Resume getResume(String uuid, int index);
 
     protected abstract void updateResume(Resume r, int index);
+
+    protected abstract boolean isOverflow();
 
     @Override
     public final void update(Resume r) {
@@ -35,7 +35,7 @@ public abstract class AbstractStorage implements Storage {
         int index = getIndex(r.getUuid());
         if (index >= 0) {
             throw new ExistStorageException(r.getUuid());
-        } else if (size == STORAGE_LIMIT) {
+        } else if (isOverflow()) {
             throw new StorageException("Storage overflow", r.getUuid());
         } else {
             insertResume(r, index);
@@ -44,7 +44,7 @@ public abstract class AbstractStorage implements Storage {
     }
 
     @Override
-    public Resume get(String uuid) {
+    public final Resume get(String uuid) {
         int index = getIndex(uuid);
         if (index < 0) {
             throw new NotExistStorageException(uuid);

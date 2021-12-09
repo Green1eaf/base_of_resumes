@@ -8,16 +8,22 @@ import java.util.Arrays;
  * Array based storage for Resumes
  */
 public abstract class AbstractArrayStorage extends AbstractStorage {
-    protected Resume[] storage = new Resume[STORAGE_LIMIT];
+    protected static final int STORAGE_LIMIT = 10000;
+    protected final Resume[] storage = new Resume[STORAGE_LIMIT];
 
     @Override
-    protected Resume getResume(String uuid, int index) {
+    protected final Resume getResume(String uuid, int index) {
         return storage[index];
     }
 
     @Override
-    protected void updateResume(Resume r, int index) {
+    protected final void updateResume(Resume r, int index) {
         storage[index] = r;
+    }
+
+    @Override
+    protected final boolean isOverflow(){
+        return size == STORAGE_LIMIT;
     }
 
     @Override
