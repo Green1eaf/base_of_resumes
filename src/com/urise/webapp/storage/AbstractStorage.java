@@ -6,40 +6,40 @@ import com.urise.webapp.exception.StorageException;
 import com.urise.webapp.model.Resume;
 
 public abstract class AbstractStorage implements Storage {
-    protected abstract Object getIndex(String uuid);
+    protected abstract Object getSearchKey(String uuid);
 
-    protected abstract void insertResume(Resume r, Object index);
+    protected abstract void insertResume(Resume r, Integer searchKey);
 
-    protected abstract void eraseResume(Object uuid);
+    protected abstract void eraseResume(Integer searchKey);
 
-    protected abstract Resume getResume(Object uuid);
+    protected abstract Resume getResume(Object searchKey);
 
-    protected abstract void updateResume(Resume r, Object index);
+    protected abstract void updateResume(Resume r, Integer searchKey);
 
     @Override
     public final void update(Resume r) {
-        int index = (Integer) getIndex(r.getUuid());
+        int index = (Integer) getSearchKey(r.getUuid());
         if (index < 0) throw new NotExistStorageException(r.getUuid());
         updateResume(r, index);
     }
 
     @Override
     public void save(Resume r) {
-        int index = (Integer) getIndex(r.getUuid());
+        int index = (Integer) getSearchKey(r.getUuid());
         if (index >= 0) throw new ExistStorageException(r.getUuid());
         insertResume(r, index);
     }
 
     @Override
     public final Resume get(String uuid) {
-        int index = (Integer) getIndex(uuid);
+        int index = (Integer) getSearchKey(uuid);
         if (index < 0) throw new NotExistStorageException(uuid);
-        return getResume(uuid);
+        return getResume(index);
     }
 
     @Override
     public final void delete(String uuid) {
-        int index = (Integer) getIndex(uuid);
+        int index = (Integer) getSearchKey(uuid);
         if (index < 0) throw new NotExistStorageException(uuid);
         eraseResume(index);
     }

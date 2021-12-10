@@ -13,34 +13,31 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     protected final Resume[] storage = new Resume[STORAGE_LIMIT];
     protected int size = 0;
 
-    protected abstract void paste(Resume r, Object index);
+    protected abstract void paste(Resume r, Integer searchKey);
 
-    protected abstract void remove(Object uuid);
+    protected abstract void remove(Integer searchKey);
 
     @Override
-    protected final Resume getResume(Object uuid) {
-        return storage[(Integer) getIndex((String) uuid)];
+    protected final Resume getResume(Object searchKey) {
+        return storage[(Integer) searchKey];
     }
 
     @Override
-    protected final void updateResume(Resume r, Object index) {
-        storage[(Integer) index] = r;
+    protected final void updateResume(Resume r, Integer searchKey) {
+        storage[searchKey] = r;
     }
 
     @Override
-    protected final void insertResume(Resume r, Object index) {
+    protected final void insertResume(Resume r, Integer searchKey) {
         if (size == STORAGE_LIMIT) throw new StorageException("Storage overflow", r.getUuid());
-        paste(r, index);
+        paste(r, searchKey);
         size++;
     }
 
     @Override
-    protected final void eraseResume(Object index) {
-        int numMoved = size - 1 - (Integer) index;
-        if (numMoved > 0) {
-            System.arraycopy(storage, (Integer) index + 1, storage, (Integer) index, numMoved);
-        }
-        remove(index);
+    protected final void eraseResume(Integer searchKey) {
+        remove(searchKey);
+        storage[size] = null;
         size--;
     }
 

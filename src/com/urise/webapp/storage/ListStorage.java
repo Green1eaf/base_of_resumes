@@ -9,7 +9,7 @@ public class ListStorage extends AbstractStorage {
     private final List<Resume> listStorage = new LinkedList<>();
 
     @Override
-    protected final Object getIndex(String uuid) {
+    protected final Object getSearchKey(String uuid) {
         int index = 0;
         for (Resume r : listStorage) {
             if (r.getUuid().equals(uuid)) return index;
@@ -19,23 +19,23 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    protected final void insertResume(Resume r, Object index) {
+    protected final void insertResume(Resume r, Integer searchKey) {
         listStorage.add(r);
     }
 
     @Override
-    protected final void eraseResume(Object index) {
-        listStorage.remove(((Integer) index).intValue());
+    protected final void eraseResume(Integer searchKey) {
+        listStorage.remove(searchKey.intValue());
     }
 
     @Override
-    protected final Resume getResume(Object uuid) {
-        return listStorage.get((Integer) getIndex((String) uuid));
+    protected final Resume getResume(Object searchKey) {
+        return listStorage.get((Integer) searchKey);
     }
 
     @Override
-    protected final void updateResume(Resume r, Object index) {
-        listStorage.add((Integer) index, r);
+    protected final void updateResume(Resume r, Integer searchKey) {
+        listStorage.add(searchKey, r);
     }
 
     @Override
