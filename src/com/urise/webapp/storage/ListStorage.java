@@ -2,30 +2,34 @@ package com.urise.webapp.storage;
 
 import com.urise.webapp.model.Resume;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ListStorage extends AbstractStorage {
-    private final List<Resume> listStorage = new LinkedList<>();
+    private final List<Resume> listStorage = new ArrayList<>();
 
     @Override
-    protected final Object getSearchKey(String uuid) {
-        int index = 0;
-        for (Resume r : listStorage) {
-            if (r.getUuid().equals(uuid)) return index;
-            index++;
+    protected final Integer getSearchKey(String uuid) {
+        for (int i = 0; i < size(); i++) {
+            if (listStorage.get(i).getUuid().equals(uuid)) return i;
         }
-        return -1;
+        return null;
     }
 
     @Override
-    protected final void insertResume(Resume r, Integer searchKey) {
+    protected boolean isExist(Object searchKey) {
+        return searchKey != null;
+    }
+
+    @Override
+    protected final void updateResume(Resume r, Object searchKey) {
+        listStorage.set((Integer) searchKey, r);
+    }
+
+    @Override
+    protected final void insertResume(Resume r, Object searchKey) {
         listStorage.add(r);
-    }
-
-    @Override
-    protected final void eraseResume(Integer searchKey) {
-        listStorage.remove(searchKey.intValue());
     }
 
     @Override
@@ -34,8 +38,8 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    protected final void updateResume(Resume r, Integer searchKey) {
-        listStorage.add(searchKey, r);
+    protected final void eraseResume(Object searchKey) {
+        listStorage.remove(((Integer) searchKey).intValue());
     }
 
     @Override
@@ -44,8 +48,8 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    public final Resume[] getAll() {
-        return listStorage.toArray(new Resume[0]);
+    public final List<Resume> getAllSorted() {
+        return listStorage.stream().sorted(AbstractStorage::compare).collect(Collectors.toList());
     }
 
     @Override
