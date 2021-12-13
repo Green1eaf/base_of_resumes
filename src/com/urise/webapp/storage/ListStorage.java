@@ -4,7 +4,6 @@ import com.urise.webapp.model.Resume;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class ListStorage extends AbstractStorage {
     private final List<Resume> listStorage = new ArrayList<>();
@@ -20,6 +19,11 @@ public class ListStorage extends AbstractStorage {
     @Override
     protected boolean isExist(Object searchKey) {
         return searchKey != null;
+    }
+
+    @Override
+    protected List<Resume> getStorage() {
+        return new ArrayList<>(listStorage);
     }
 
     @Override
@@ -45,11 +49,6 @@ public class ListStorage extends AbstractStorage {
     @Override
     public final void clear() {
         listStorage.clear();
-    }
-
-    @Override
-    public final List<Resume> getAllSorted() {
-        return listStorage.stream().sorted(AbstractStorage::compare).collect(Collectors.toList());
     }
 
     @Override
