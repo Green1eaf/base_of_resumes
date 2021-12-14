@@ -22,24 +22,24 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     protected abstract void remove(Integer searchKey);
 
     @Override
-    protected final Resume getResume(Object searchKey) {
+    protected final Resume doGet(Object searchKey) {
         return storage[(Integer) searchKey];
     }
 
     @Override
-    protected final void updateResume(Resume r, Object searchKey) {
+    protected final void doUpdate(Resume r, Object searchKey) {
         storage[(Integer) searchKey] = r;
     }
 
     @Override
-    protected final void insertResume(Resume r, Object searchKey) {
+    protected final void doSave(Resume r, Object searchKey) {
         if (size == STORAGE_LIMIT) throw new StorageException("Storage overflow", r.getUuid());
         paste(r, (Integer) searchKey);
         size++;
     }
 
     @Override
-    protected final void eraseResume(Object searchKey) {
+    protected final void doDelete(Object searchKey) {
         remove((Integer) searchKey);
         storage[size] = null;
         size--;
@@ -54,7 +54,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     /**
      * @return sorted list, contains only Resumes in storage (without null)
      */
-    protected List<Resume> getStorage(){
+    protected List<Resume> doCopyAll(){
         return Arrays.asList(Arrays.copyOf(storage, size()));
     }
 
