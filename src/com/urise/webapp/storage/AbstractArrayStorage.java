@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Array based storage for Resumes
  */
-public abstract class AbstractArrayStorage extends AbstractStorage {
+public abstract class AbstractArrayStorage extends AbstractStorage<Integer> {
     protected static final int STORAGE_LIMIT = 10000;
 
     protected final Resume[] storage = new Resume[STORAGE_LIMIT];
@@ -22,25 +22,25 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     protected abstract void remove(Integer searchKey);
 
     @Override
-    protected final Resume doGet(Object searchKey) {
-        return storage[(Integer) searchKey];
+    protected final Resume doGet(Integer searchKey) {
+        return storage[searchKey];
     }
 
     @Override
-    protected final void doUpdate(Resume r, Object searchKey) {
-        storage[(Integer) searchKey] = r;
+    protected final void doUpdate(Resume r, Integer searchKey) {
+        storage[searchKey] = r;
     }
 
     @Override
-    protected final void doSave(Resume r, Object searchKey) {
+    protected final void doSave(Resume r, Integer searchKey) {
         if (size == STORAGE_LIMIT) throw new StorageException("Storage overflow", r.getUuid());
-        paste(r, (Integer) searchKey);
+        paste(r, searchKey);
         size++;
     }
 
     @Override
-    protected final void doDelete(Object searchKey) {
-        remove((Integer) searchKey);
+    protected final void doDelete(Integer searchKey) {
+        remove(searchKey);
         storage[size] = null;
         size--;
     }
@@ -54,7 +54,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     /**
      * @return sorted list, contains only Resumes in storage (without null)
      */
-    protected List<Resume> doCopyAll(){
+    protected List<Resume> doCopyAll() {
         return Arrays.asList(Arrays.copyOf(storage, size()));
     }
 
@@ -63,7 +63,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    protected boolean isExist(Object searchKey) {
-        return (Integer) searchKey >= 0;
+    protected boolean isExist(Integer searchKey) {
+        return searchKey >= 0;
     }
 }
