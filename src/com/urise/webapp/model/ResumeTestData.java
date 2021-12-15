@@ -19,10 +19,8 @@ public class ResumeTestData {
 
         Map<SectionType, Section> sections = new HashMap<>();
 
-        String personal = "Аналитический склад ума, сильная логика, креативность, инициативность. Пурист кода и архитектуры.";
-        String objective = "Ведущий стажировок и корпоративного обучения по Java Web и Enterprise технологиям";
-        sections.put(PERSONAL, new TextSection(personal));
-        sections.put(OBJECTIVE, new TextSection(objective));
+        sections.put(PERSONAL, new TextSection("Аналитический склад ума, сильная логика, креативность, инициативность. Пурист кода и архитектуры."));
+        sections.put(OBJECTIVE, new TextSection("Ведущий стажировок и корпоративного обучения по Java Web и Enterprise технологиям"));
 
         List<String> achievment = new ArrayList<>(Arrays.asList("С 2013 года: разработка проектов \"Разработка Web приложения\",\"Java Enterprise\", " +
                         "\"Многомодульный maven. Многопоточность. XML (JAXB/StAX). Веб сервисы (JAX-RS/SOAP). Удаленное взаимодействие (JMS/AKKA)\". " +
@@ -122,7 +120,6 @@ public class ResumeTestData {
                 GITHUB.getTitle() + ": " + r.getContacts().get(GITHUB) + "\n" +
                 STACKOVERFLOW.getTitle() + ": " + r.getContacts().get(STACKOVERFLOW) + "\n" +
                 HOMEPAGE.getTitle() + ": " + r.getContacts().get(HOMEPAGE));
-
 
         System.out.println("\n" + PERSONAL.getTitle() + ": \n" +
                 ((TextSection) r.getSections().get(PERSONAL)).getText());
