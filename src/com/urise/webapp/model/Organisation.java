@@ -1,13 +1,16 @@
 package com.urise.webapp.model;
 
+import java.time.LocalDate;
+import java.time.YearMonth;
+
 public class Organisation {
     private String homepage;
-    private String beginDate;
-    private String endDate;
+    private YearMonth beginDate;
+    private YearMonth endDate;
     private String post;
     private String comment;
 
-    public Organisation(String homepage, String beginDate, String endDate, String post, String comment) {
+    public Organisation(String homepage, YearMonth beginDate, YearMonth endDate, String post, String comment) {
         this.homepage = homepage;
         this.beginDate = beginDate;
         this.endDate = endDate;
@@ -19,11 +22,11 @@ public class Organisation {
         return homepage;
     }
 
-    public String getBeginDate() {
+    public YearMonth getBeginDate() {
         return beginDate;
     }
 
-    public String getEndDate() {
+    public YearMonth getEndDate() {
         return endDate;
     }
 

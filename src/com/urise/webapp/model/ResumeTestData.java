@@ -1,5 +1,8 @@
 package com.urise.webapp.model;
 
+import java.time.LocalDate;
+import java.time.Year;
+import java.time.YearMonth;
 import java.util.*;
 
 import static com.urise.webapp.model.ContactType.*;
@@ -58,16 +61,16 @@ public class ResumeTestData {
 
         List<Organisation> list = new ArrayList<>();
         String homepage = "javaops.ru";
-        String beginDate = "10/2013";
-        String endDate = "Сейчас";
+        YearMonth beginDate = YearMonth.of(2013, 10);
+        YearMonth endDate = YearMonth.now();
         String post = "Автор проекта";
         String comment = "Создание, организация и проведение Java онлайн проектов и стажировок.";
         Organisation organisation = new Organisation(homepage, beginDate, endDate, post, comment);
         list.add(organisation);
 
         homepage = "wrike.com/vn/";
-        beginDate = "10/2014";
-        endDate = "01/2016";
+        beginDate = YearMonth.of(2014, 10);
+        endDate = YearMonth.of(2016, 10);
         post = "Старший разработчик (backend)";
         comment = "Проектирование и разработка онлайн платформы управления проектами Wrike (Java 8 API, Maven, Spring, MyBatis, Guava, Vaadin, PostgreSQL, Redis). " +
                 "Двухфакторная аутентификация, авторизация по OAuth1, OAuth2, JWT SSO.";
@@ -75,8 +78,8 @@ public class ResumeTestData {
         list.add(organisation);
 
         homepage = "RIT Center";
-        beginDate = "04/2012";
-        endDate = "10/2014";
+        beginDate = YearMonth.of(2012, 4);
+        endDate = YearMonth.of(2014, 10);
         post = "Java архитектор";
         comment = "Организация процесса разработки системы ERP для разных окружений: релизная политика, версионирование, " +
                 "ведение CI (Jenkins), миграция базы (кастомизация Flyway), конфигурирование системы (pgBoucer, Nginx), AAA via SSO. " +
@@ -91,16 +94,16 @@ public class ResumeTestData {
 
         List<Organisation> listEducation = new ArrayList<>();
         homepage = "www.coursera.org/learn/scala-functional-programming";
-        beginDate = "03/2013";
-        endDate = "05/2013";
+        beginDate = YearMonth.of(2013, 3);
+        endDate = YearMonth.of(2013, 5);
         post = "Student";
         comment = "Functional Programming Principles in Scala\" by Martin Odersky";
         organisation = new Organisation(homepage, beginDate, endDate, post, comment);
         listEducation.add(organisation);
 
         homepage = "www.luxoft-training.ru/kurs/obektno-orientirovannyy_analiz_i_proektirovanie_na_uml.html";
-        beginDate = "03/2011";
-        endDate = "04/2011";
+        beginDate = YearMonth.of(2011, 3);
+        endDate = YearMonth.of(2011, 4);
         post = "Student";
         comment = "Курс \"Объектно-ориентированный анализ ИС. Концептуальное моделирование на UML.\"";
         organisation = new Organisation(homepage, beginDate, endDate, post, comment);
