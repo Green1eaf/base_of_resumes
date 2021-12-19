@@ -1,8 +1,8 @@
-package com.urise.webapp.model;
+package com.urise.webapp;
+
+import com.urise.webapp.model.*;
 
 import java.time.LocalDate;
-import java.time.Year;
-import java.time.YearMonth;
 import java.util.*;
 
 import static com.urise.webapp.model.ContactType.*;
@@ -13,7 +13,7 @@ public class ResumeTestData {
     public static void main(String[] args) {
         Map<ContactType, String> contacts = new HashMap<>();
         contacts.put(PHONE, "+7(921) 855-0482");
-        contacts.put(EMAIL, "gkislin@yandex.ru");
+        contacts.put(MAIL, "gkislin@yandex.ru");
         contacts.put(SKYPE, "grigory.kislin");
         contacts.put(LINKEDIN, "linkedin.com/in/gkislin");
         contacts.put(GITHUB, "github.com/gkislin");
@@ -60,96 +60,72 @@ public class ResumeTestData {
         sections.put(QUALIFICATIONS, new ListSection(qualification));
 
         List<Organisation> list = new ArrayList<>();
-        String homepage = "javaops.ru";
-        YearMonth beginDate = YearMonth.of(2013, 10);
-        YearMonth endDate = YearMonth.now();
-        String post = "Автор проекта";
-        String comment = "Создание, организация и проведение Java онлайн проектов и стажировок.";
-        Organisation organisation = new Organisation(homepage, beginDate, endDate, post, comment);
+        String name = "JavaOps";
+        String url = "javaops.ru";
+        LocalDate startDate = LocalDate.of(2013, 10, 1);
+        LocalDate endDate = LocalDate.now().now();
+        String title = "Автор проекта";
+        String description = "Создание, организация и проведение Java онлайн проектов и стажировок.";
+        Organisation organisation = new Organisation(name, url, startDate, endDate, title, description);
         list.add(organisation);
 
-        homepage = "wrike.com/vn/";
-        beginDate = YearMonth.of(2014, 10);
-        endDate = YearMonth.of(2016, 10);
-        post = "Старший разработчик (backend)";
-        comment = "Проектирование и разработка онлайн платформы управления проектами Wrike (Java 8 API, Maven, Spring, MyBatis, Guava, Vaadin, PostgreSQL, Redis). " +
+        name = "Wrike";
+        url = "wrike.com/vn/";
+        startDate = LocalDate.of(2014, 10, 1);
+        endDate = LocalDate.of(2016, 10, 1);
+        title = "Старший разработчик (backend)";
+        description = "Проектирование и разработка онлайн платформы управления проектами Wrike (Java 8 API, Maven, Spring, MyBatis, Guava, Vaadin, PostgreSQL, Redis). " +
                 "Двухфакторная аутентификация, авторизация по OAuth1, OAuth2, JWT SSO.";
-        organisation = new Organisation(homepage, beginDate, endDate, post, comment);
+        organisation = new Organisation(name, url, startDate, endDate, title, description);
         list.add(organisation);
 
-        homepage = "RIT Center";
-        beginDate = YearMonth.of(2012, 4);
-        endDate = YearMonth.of(2014, 10);
-        post = "Java архитектор";
-        comment = "Организация процесса разработки системы ERP для разных окружений: релизная политика, версионирование, " +
+        name = "RIT Center";
+        url = "RIT Center";
+        startDate = LocalDate.of(2012, 4, 1);
+        endDate = LocalDate.of(2014, 10, 1);
+        title = "Java архитектор";
+        description = "Организация процесса разработки системы ERP для разных окружений: релизная политика, версионирование, " +
                 "ведение CI (Jenkins), миграция базы (кастомизация Flyway), конфигурирование системы (pgBoucer, Nginx), AAA via SSO. " +
                 "Архитектура БД и серверной части системы. Разработка интергационных сервисов: CMIS, BPMN2, 1C (WebServices), сервисов " +
                 "общего назначения (почта, экспорт в pdf, doc, html). Интеграция Alfresco JLAN для online редактирование из браузера " +
                 "документов MS Office. Maven + plugin development, Ant, Apache Commons, Spring security, Spring MVC, Tomcat,WSO2, xcmis, " +
                 "OpenCmis, Bonita, Python scripting, Unix shell remote scripting via ssh tunnels, PL/Python";
-        organisation = new Organisation(homepage, beginDate, endDate, post, comment);
+        organisation = new Organisation(name, url, startDate, endDate, title, description);
         list.add(organisation);
 
         sections.put(EXPERIENCE, new OrganisationSection(list));
 
         List<Organisation> listEducation = new ArrayList<>();
-        homepage = "www.coursera.org/learn/scala-functional-programming";
-        beginDate = YearMonth.of(2013, 3);
-        endDate = YearMonth.of(2013, 5);
-        post = "Student";
-        comment = "Functional Programming Principles in Scala\" by Martin Odersky";
-        organisation = new Organisation(homepage, beginDate, endDate, post, comment);
+        name = "Coursera";
+        url = "www.coursera.org/learn/scala-functional-programming";
+        startDate = LocalDate.of(2013, 3, 1);
+        endDate = LocalDate.of(2013, 5, 1);
+        title = "Student";
+        description = "Functional Programming Principles in Scala\" by Martin Odersky";
+        organisation = new Organisation(name, url, startDate, endDate, title, description);
         listEducation.add(organisation);
 
-        homepage = "www.luxoft-training.ru/kurs/obektno-orientirovannyy_analiz_i_proektirovanie_na_uml.html";
-        beginDate = YearMonth.of(2011, 3);
-        endDate = YearMonth.of(2011, 4);
-        post = "Student";
-        comment = "Курс \"Объектно-ориентированный анализ ИС. Концептуальное моделирование на UML.\"";
-        organisation = new Organisation(homepage, beginDate, endDate, post, comment);
+        name = "Luxoft";
+        url = "www.luxoft-training.ru/kurs/obektno-orientirovannyy_analiz_i_proektirovanie_na_uml.html";
+        startDate = LocalDate.of(2011, 3, 1);
+        endDate = LocalDate.of(2011, 4, 1);
+        title = "Student";
+        description = "Курс \"Объектно-ориентированный анализ ИС. Концептуальное моделирование на UML.\"";
+        organisation = new Organisation(name, url, startDate, endDate, title, description);
         listEducation.add(organisation);
         sections.put(EDUCATION, new OrganisationSection(listEducation));
 
         Resume r = new Resume("Кислин Григорий", contacts, sections);
 
-        System.out.println("ID: " + r.getUuid());
-        System.out.println("\nПолное имя: " + r.getFullName());
+        System.out.println("ID: " + r);
 
-        System.out.println("\nКонтакты:\n" +
-                PHONE.getTitle() + ": " + r.getContacts().get(PHONE) + "\n" +
-                EMAIL.getTitle() + ": " + r.getContacts().get(EMAIL) + "\n" +
-                SKYPE.getTitle() + ": " + r.getContacts().get(SKYPE) + "\n" +
-                LINKEDIN.getTitle() + ": " + r.getContacts().get(LINKEDIN) + "\n" +
-                GITHUB.getTitle() + ": " + r.getContacts().get(GITHUB) + "\n" +
-                STACKOVERFLOW.getTitle() + ": " + r.getContacts().get(STACKOVERFLOW) + "\n" +
-                HOMEPAGE.getTitle() + ": " + r.getContacts().get(HOMEPAGE));
+        System.out.println("\nКонтакты:\n");
+        for(ContactType ct : ContactType.values()) {
+            System.out.println(ct.getTitle() + ": " + r.getContact(ct));
+        }
 
-        System.out.println("\n" + PERSONAL.getTitle() + ": \n" +
-                ((TextSection) r.getSections().get(PERSONAL)).getText());
-
-        System.out.println("\n" + OBJECTIVE.getTitle() + ": \n" +
-                ((TextSection) r.getSections().get(OBJECTIVE)).getText());
-
-        System.out.println("\n" + ACHIEVEMENT.getTitle() + ": ");
-        ((ListSection) r.getSections().get(ACHIEVEMENT)).getStorage().forEach(System.out::println);
-
-        System.out.println("\n" + QUALIFICATIONS.getTitle() + ": ");
-        ((ListSection) r.getSections().get(QUALIFICATIONS)).getStorage().forEach(System.out::println);
-
-        System.out.println("\n" + EXPERIENCE.getTitle() + ": ");
-        ((OrganisationSection) r.getSections().get(EXPERIENCE)).getStorage().forEach(s -> {
-            System.out.println("homepage: " + s.getHomepage() + "\n" +
-                    "Date: " + s.getBeginDate() + " - " + s.getEndDate() + "\n" +
-                    "Post: " + s.getPost() + "\n" +
-                    "Comment: " + s.getComment());
-        });
-
-        System.out.println("\n" + EDUCATION.getTitle() + ": ");
-        ((OrganisationSection) r.getSections().get(EDUCATION)).getStorage().forEach(s -> {
-            System.out.println("homepage: " + s.getHomepage() + "\n" +
-                    "Date: " + s.getBeginDate() + " - " + s.getEndDate() + "\n" +
-                    "Post: " + s.getPost() + "\n" +
-                    "Comment: " + s.getComment());
-        });
+        for(SectionType st : SectionType.values()) {
+            System.out.println(st.getTitle() + ": " + r.getSection(st));
+        }
     }
 }

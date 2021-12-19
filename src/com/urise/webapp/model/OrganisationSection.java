@@ -1,23 +1,18 @@
 package com.urise.webapp.model;
 
 import java.util.List;
+import java.util.Objects;
 
 public class OrganisationSection implements Section {
-    private List<Organisation> storage;
+    private final List<Organisation> organisations;
 
-    public OrganisationSection(List<Organisation> storage) {
-        this.storage = storage;
+    public OrganisationSection(List<Organisation> organisations) {
+        Objects.requireNonNull(organisations, "organisations must not be null");
+        this.organisations = organisations;
     }
 
-    public List<Organisation> getStorage() {
-        return storage;
-    }
-
-    @Override
-    public String toString() {
-        return "OrganisationSection{" +
-                "storage=" + storage +
-                '}';
+    public List<Organisation> getOrganisations() {
+        return organisations;
     }
 
     @Override
@@ -27,11 +22,16 @@ public class OrganisationSection implements Section {
 
         OrganisationSection that = (OrganisationSection) o;
 
-        return storage.equals(that.storage);
+        return organisations.equals(that.organisations);
     }
 
     @Override
     public int hashCode() {
-        return storage.hashCode();
+        return organisations.hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return organisations.toString();
     }
 }

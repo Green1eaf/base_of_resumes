@@ -1,21 +1,22 @@
 package com.urise.webapp.model;
 
-public class TextSection implements Section {
-    private String text;
+import java.util.Objects;
 
-    public TextSection(String text) {
-        this.text = text;
+public class TextSection implements Section {
+    private final String content;
+
+    public TextSection(String content) {
+        Objects.requireNonNull(content, "content must not be null");
+        this.content = content;
     }
 
-    public String getText() {
-        return text;
+    public String getContent() {
+        return content;
     }
 
     @Override
     public String toString() {
-        return "TextSection{" +
-                "text='" + text + '\'' +
-                '}';
+        return content;
     }
 
     @Override
@@ -25,11 +26,11 @@ public class TextSection implements Section {
 
         TextSection that = (TextSection) o;
 
-        return text.equals(that.text);
+        return content.equals(that.content);
     }
 
     @Override
     public int hashCode() {
-        return text.hashCode();
+        return content.hashCode();
     }
 }

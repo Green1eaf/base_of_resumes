@@ -1,52 +1,25 @@
 package com.urise.webapp.model;
 
 import java.time.LocalDate;
-import java.time.YearMonth;
+import java.util.Objects;
 
 public class Organisation {
-    private String homepage;
-    private YearMonth beginDate;
-    private YearMonth endDate;
-    private String post;
-    private String comment;
+    private final Link homepage;
 
-    public Organisation(String homepage, YearMonth beginDate, YearMonth endDate, String post, String comment) {
-        this.homepage = homepage;
-        this.beginDate = beginDate;
+    private final LocalDate startDate;
+    private final LocalDate endDate;
+    private final String title;
+    private final String description;
+
+    public Organisation(String name, String url, LocalDate startDate, LocalDate endDate, String title, String description) {
+        Objects.requireNonNull(startDate, "beginDate must not be null");
+        Objects.requireNonNull(endDate, "endDate must not be null");
+        Objects.requireNonNull(title, "title must not be null");
+        this.homepage = new Link(name, url);
+        this.startDate = startDate;
         this.endDate = endDate;
-        this.post = post;
-        this.comment = comment;
-    }
-
-    public String getHomepage() {
-        return homepage;
-    }
-
-    public YearMonth getBeginDate() {
-        return beginDate;
-    }
-
-    public YearMonth getEndDate() {
-        return endDate;
-    }
-
-    public String getPost() {
-        return post;
-    }
-
-    public String getComment() {
-        return comment;
-    }
-
-    @Override
-    public String toString() {
-        return "Organisation{" +
-                "homepage='" + homepage + '\'' +
-                ", beginDate='" + beginDate + '\'' +
-                ", endDate='" + endDate + '\'' +
-                ", post='" + post + '\'' +
-                ", comment='" + comment + '\'' +
-                '}';
+        this.title = title;
+        this.description = description;
     }
 
     @Override
@@ -57,19 +30,30 @@ public class Organisation {
         Organisation that = (Organisation) o;
 
         if (!homepage.equals(that.homepage)) return false;
-        if (!beginDate.equals(that.beginDate)) return false;
+        if (!startDate.equals(that.startDate)) return false;
         if (!endDate.equals(that.endDate)) return false;
-        if (!post.equals(that.post)) return false;
-        return comment.equals(that.comment);
+        if (!title.equals(that.title)) return false;
+        return description != null ? description.equals(that.description) : that.description == null;
     }
 
     @Override
     public int hashCode() {
         int result = homepage.hashCode();
-        result = 31 * result + beginDate.hashCode();
+        result = 31 * result + startDate.hashCode();
         result = 31 * result + endDate.hashCode();
-        result = 31 * result + post.hashCode();
-        result = 31 * result + comment.hashCode();
+        result = 31 * result + title.hashCode();
+        result = 31 * result + (description != null ? description.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Organisation{" +
+                "homepage=" + homepage +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                '}';
     }
 }

@@ -1,23 +1,23 @@
 package com.urise.webapp.model;
 
 import java.util.List;
+import java.util.Objects;
 
 public class ListSection implements Section {
-    private List<String> storage;
+    private final List<String> items;
 
-    public ListSection(List<String> listSection) {
-        this.storage = listSection;
+    public ListSection(List<String> items) {
+        Objects.requireNonNull(items, "items must not be null");
+        this.items = items;
     }
 
-    public List<String> getStorage() {
-        return storage;
+    public List<String> getItems() {
+        return items;
     }
 
     @Override
     public String toString() {
-        return "ListSection{" +
-                "listSection=" + storage +
-                '}';
+        return items.toString();
     }
 
     @Override
@@ -27,11 +27,11 @@ public class ListSection implements Section {
 
         ListSection that = (ListSection) o;
 
-        return storage.equals(that.storage);
+        return items.equals(that.items);
     }
 
     @Override
     public int hashCode() {
-        return storage.hashCode();
+        return items.hashCode();
     }
 }
