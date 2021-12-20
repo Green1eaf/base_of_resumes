@@ -21,7 +21,7 @@ public class MainFile {
     public static void main(String[] args) {
         MainFile test = new MainFile();
 
-        String startDir = "../basejava";
+        String startDir = "./src";
 
         test.listFiles(startDir);
     }

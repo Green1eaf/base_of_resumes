@@ -15,12 +15,12 @@ public class ArrayStorage extends AbstractArrayStorage {
     }
 
     @Override
-    protected final void paste(Resume r, Integer searchKey) {
+    protected final void paste(Resume r, Integer index) {
         storage[size] = r;
     }
 
     @Override
-    protected final void remove(Integer searchKey) {
-        storage[searchKey] = storage[size - 1];
+    protected final void remove(Integer index) {
+        storage[index] = storage[size - 1];
     }
 }
