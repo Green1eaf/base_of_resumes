@@ -9,9 +9,8 @@ import static com.urise.webapp.model.ContactType.*;
 import static com.urise.webapp.model.SectionType.*;
 
 public class ResumeTestData {
-
-    public static void main(String[] args) {
-        Map<ContactType, String> contacts = new HashMap<>();
+    private static final Map<ContactType, String> contacts = new HashMap<>();
+    static  {
         contacts.put(PHONE, "+7(921) 855-0482");
         contacts.put(MAIL, "gkislin@yandex.ru");
         contacts.put(SKYPE, "grigory.kislin");
@@ -19,9 +18,10 @@ public class ResumeTestData {
         contacts.put(GITHUB, "github.com/gkislin");
         contacts.put(STACKOVERFLOW, "stackoverflow.com/users/548473/grigory-kislin");
         contacts.put(HOMEPAGE, "gkislin.ru/");
+    }
 
-        Map<SectionType, Section> sections = new HashMap<>();
-
+    private static final Map<SectionType, Section> sections = new HashMap<>();
+    static {
         sections.put(PERSONAL, new TextSection("Аналитический склад ума, сильная логика, креативность, инициативность. Пурист кода и архитектуры."));
         sections.put(OBJECTIVE, new TextSection("Ведущий стажировок и корпоративного обучения по Java Web и Enterprise технологиям"));
 
@@ -89,9 +89,15 @@ public class ResumeTestData {
                                 "Аспирантура (программист С, С++)"),
                         new Organisation.Position(1987, Month.SEPTEMBER, 1993, Month.JULY, "Student",
                                 "Инженер (программист Fortran, C)"))))));
+    }
 
+    public static Resume createResume(String uuid, String name) {
+        return new Resume(uuid, name, contacts, sections);
+    }
 
-        Resume r = new Resume("Кислин Григорий", contacts, sections);
+    public static void main(String[] args) {
+
+        Resume r = createResume("uuid1","Кислин Григорий");
 
         System.out.println("ID: " + r);
 

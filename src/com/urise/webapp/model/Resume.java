@@ -32,6 +32,15 @@ public class Resume implements Comparable<Resume> {
         this.sections = sections;
     }
 
+    public Resume(String uuid, String fullName, Map<ContactType, String> contacts, Map<SectionType, Section> sections) {
+        Objects.requireNonNull(uuid, "uuid most not be null");
+        Objects.requireNonNull(fullName, "fullName most not be null");
+        this.uuid = uuid;
+        this.fullName = fullName;
+        this.contacts = contacts;
+        this.sections = sections;
+    }
+
     public String getUuid() {
         return uuid;
     }
