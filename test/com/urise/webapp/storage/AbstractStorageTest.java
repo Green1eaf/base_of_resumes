@@ -97,7 +97,8 @@ public abstract class AbstractStorageTest {
                 new Resume(UUID_2, "Ivanova Elena"),
                 new Resume(UUID_1, "Petrov Ivan"),
                 new Resume(UUID_3, "Petrov Ivan")));
-        Assert.assertArrayEquals(new List[]{expectedStorage}, new List[]{storage.getAllSorted()});
+        Assert.assertEquals(3, storage.getAllSorted().size());
+        Assert.assertEquals(expectedStorage, storage.getAllSorted());
     }
 
     @Test

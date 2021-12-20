@@ -1,35 +1,28 @@
 package com.urise.webapp;
 
-import java.io.IOException;
-import java.nio.file.*;
-import java.nio.file.attribute.BasicFileAttributes;
+import java.io.File;
 
 public class MainFile {
-    public static void main(String[] args) throws IOException {
-        Path path = Paths.get("/home/green1eaf/Java");
-        Files.walkFileTree(path, new MyFileVisitor());
-    }
-}
+    public void listFiles(String startDir) {
+        File dir = new File(startDir);
+        File[] files = dir.listFiles();
 
-class MyFileVisitor implements FileVisitor<Path> {
-    @Override
-    public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes basicFileAttributes) throws IOException {
-        return FileVisitResult.CONTINUE;
-    }
-
-    @Override
-    public FileVisitResult visitFile(Path file, BasicFileAttributes basicFileAttributes) throws IOException {
-        System.out.println("File: " + file.getFileName());
-        return FileVisitResult.CONTINUE;
+        if (files != null && files.length > 0) {
+            for (File file : files) {
+                if (file.isDirectory()) {
+                    listFiles(file.getAbsolutePath());
+                } else {
+                    System.out.println(file.getName() + " (size in bytes: " + file.length() + ")");
+                }
+            }
+        }
     }
 
-    @Override
-    public FileVisitResult visitFileFailed(Path path, IOException e) throws IOException {
-        return FileVisitResult.TERMINATE;
-    }
+    public static void main(String[] args) {
+        MainFile test = new MainFile();
 
-    @Override
-    public FileVisitResult postVisitDirectory(Path path, IOException e) throws IOException {
-        return FileVisitResult.CONTINUE;
+        String startDir = "/home/green1eaf/Java/basejava";
+
+        test.listFiles(startDir);
     }
 }
