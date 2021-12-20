@@ -2,7 +2,7 @@ package com.urise.webapp;
 
 import com.urise.webapp.model.*;
 
-import java.time.LocalDate;
+import java.time.Month;
 import java.util.*;
 
 import static com.urise.webapp.model.ContactType.*;
@@ -25,7 +25,7 @@ public class ResumeTestData {
         sections.put(PERSONAL, new TextSection("Аналитический склад ума, сильная логика, креативность, инициативность. Пурист кода и архитектуры."));
         sections.put(OBJECTIVE, new TextSection("Ведущий стажировок и корпоративного обучения по Java Web и Enterprise технологиям"));
 
-        List<String> achievment = new ArrayList<>(Arrays.asList("С 2013 года: разработка проектов \"Разработка Web приложения\",\"Java Enterprise\", " +
+        sections.put(ACHIEVEMENT, new ListSection(new ArrayList<>(List.of("С 2013 года: разработка проектов \"Разработка Web приложения\",\"Java Enterprise\", " +
                         "\"Многомодульный maven. Многопоточность. XML (JAXB/StAX). Веб сервисы (JAX-RS/SOAP). Удаленное взаимодействие (JMS/AKKA)\". " +
                         "Организация онлайн стажировок и ведение проектов. Более 1000 выпускников. ",
                 "Реализация двухфакторной аутентификации для онлайн платформы управления проектами Wrike. " +
@@ -39,10 +39,10 @@ public class ResumeTestData {
                         "Сбор статистики сервисов и информации о состоянии через систему мониторинга Nagios. Реализация онлайн клиента для администрирования " +
                         "и мониторинга системы по JMX (Jython/ Django).",
                 "Реализация протоколов по приему платежей всех основных платежных системы России " +
-                        "(Cyberplat, Eport, Chronopay, Сбербанк), Белоруcсии(Erip, Osmp) и Никарагуа."));
-        sections.put(ACHIEVEMENT, new ListSection(achievment));
+                        "(Cyberplat, Eport, Chronopay, Сбербанк), Белоруcсии(Erip, Osmp) и Никарагуа."))));
 
-        List<String> qualification = new ArrayList<>(Arrays.asList("JEE AS: GlassFish (v2.1, v3), OC4J, JBoss, Tomcat, Jetty, WebLogic, WSO2",
+
+        sections.put(QUALIFICATIONS, new ListSection(new ArrayList<>(List.of("JEE AS: GlassFish (v2.1, v3), OC4J, JBoss, Tomcat, Jetty, WebLogic, WSO2",
                 "Version control: Subversion, Git, Mercury, ClearCase, Perforce",
                 "DB: PostgreSQL(наследование, pgplsql, PL/Python), Redis (Jedis), H2, Oracle, MySQL, SQLite, MS SQL, HSQLDB",
                 "Languages: Java, Scala, Python/Jython/PL-Python, JavaScript, Groovy, XML/XSD/XSLT, SQL, C/C++, Unix shell scripts",
@@ -56,75 +56,51 @@ public class ResumeTestData {
                 "Инструменты: Maven + plugin development, Gradle, настройка Ngnix",
                 "администрирование Hudson/Jenkins, Ant + custom task, SoapUI, JPublisher, Flyway, Nagios, iReport, OpenCmis, Bonita, pgBouncer",
                 "Отличное знание и опыт применения концепций ООП, SOA, шаблонов проектрирования, архитектурных шаблонов, UML, функционального программирования",
-                "Родной русский, английский \"upper intermediate\""));
-        sections.put(QUALIFICATIONS, new ListSection(qualification));
+                "Родной русский, английский \"upper intermediate\""))));
 
-        List<Organisation> list = new ArrayList<>();
-        String name = "JavaOps";
-        String url = "javaops.ru";
-        LocalDate startDate = LocalDate.of(2013, 10, 1);
-        LocalDate endDate = LocalDate.now().now();
-        String title = "Автор проекта";
-        String description = "Создание, организация и проведение Java онлайн проектов и стажировок.";
-        Organisation organisation = new Organisation(name, url, startDate, endDate, title, description);
-        list.add(organisation);
 
-        name = "Wrike";
-        url = "wrike.com/vn/";
-        startDate = LocalDate.of(2014, 10, 1);
-        endDate = LocalDate.of(2016, 10, 1);
-        title = "Старший разработчик (backend)";
-        description = "Проектирование и разработка онлайн платформы управления проектами Wrike (Java 8 API, Maven, Spring, MyBatis, Guava, Vaadin, PostgreSQL, Redis). " +
-                "Двухфакторная аутентификация, авторизация по OAuth1, OAuth2, JWT SSO.";
-        organisation = new Organisation(name, url, startDate, endDate, title, description);
-        list.add(organisation);
+        sections.put(EXPERIENCE, new OrganisationSection(List.of(
+                new Organisation("JavaOps", "javaops.ru", List.of(
+                        new Organisation.Position(2013, Month.OCTOBER, 2021, Month.DECEMBER, "Автор проекта",
+                                "Создание, организация и проведение Java онлайн проектов и стажировок."))),
+                new Organisation("Wrike", "wrike.com/vn/", List.of(
+                        new Organisation.Position(2014, Month.OCTOBER, 2016, Month.OCTOBER, "Старший разработчик (backend)",
+                                "Проектирование и разработка онлайн платформы управления проектами Wrike (Java 8 API, Maven, Spring, MyBatis, Guava, Vaadin, PostgreSQL, Redis). " +
+                                        "Двухфакторная аутентификация, авторизация по OAuth1, OAuth2, JWT SSO."))),
+                new Organisation("RIT Center", "RIT Center", List.of(
+                        new Organisation.Position(2012, Month.APRIL, 2014, Month.OCTOBER, "Java архитектор",
+                                "Организация процесса разработки системы ERP для разных окружений: релизная политика, версионирование, " +
+                                        "ведение CI (Jenkins), миграция базы (кастомизация Flyway), конфигурирование системы (pgBoucer, Nginx), AAA via SSO. " +
+                                        "Архитектура БД и серверной части системы. Разработка интергационных сервисов: CMIS, BPMN2, 1C (WebServices), сервисов " +
+                                        "общего назначения (почта, экспорт в pdf, doc, html). Интеграция Alfresco JLAN для online редактирование из браузера " +
+                                        "документов MS Office. Maven + plugin development, Ant, Apache Commons, Spring security, Spring MVC, Tomcat,WSO2, xcmis, " +
+                                        "OpenCmis, Bonita, Python scripting, Unix shell remote scripting via ssh tunnels, PL/Python"))))));
 
-        name = "RIT Center";
-        url = "RIT Center";
-        startDate = LocalDate.of(2012, 4, 1);
-        endDate = LocalDate.of(2014, 10, 1);
-        title = "Java архитектор";
-        description = "Организация процесса разработки системы ERP для разных окружений: релизная политика, версионирование, " +
-                "ведение CI (Jenkins), миграция базы (кастомизация Flyway), конфигурирование системы (pgBoucer, Nginx), AAA via SSO. " +
-                "Архитектура БД и серверной части системы. Разработка интергационных сервисов: CMIS, BPMN2, 1C (WebServices), сервисов " +
-                "общего назначения (почта, экспорт в pdf, doc, html). Интеграция Alfresco JLAN для online редактирование из браузера " +
-                "документов MS Office. Maven + plugin development, Ant, Apache Commons, Spring security, Spring MVC, Tomcat,WSO2, xcmis, " +
-                "OpenCmis, Bonita, Python scripting, Unix shell remote scripting via ssh tunnels, PL/Python";
-        organisation = new Organisation(name, url, startDate, endDate, title, description);
-        list.add(organisation);
 
-        sections.put(EXPERIENCE, new OrganisationSection(list));
+        sections.put(EDUCATION, new OrganisationSection(List.of(
+                new Organisation("Coursera", "www.coursera.org/learn/scala-functional-programming", List.of(
+                        new Organisation.Position(2013, Month.MARCH, 2013, Month.MAY, "Student",
+                                "Functional Programming Principles in Scala\" by Martin Odersky"))),
+                new Organisation("Luxoft", "www.luxoft-training.ru/kurs/obektno-orientirovannyy_analiz_i_proektirovanie_na_uml.html", List.of(
+                        new Organisation.Position(2011, Month.MARCH, 2013, Month.APRIL, "Student",
+                                "Курс \"Объектно-ориентированный анализ ИС. Концептуальное моделирование на UML.\""))),
+                new Organisation("Санкт-Петербургский национальный исследовательский университет информационных технологий, механики и оптики", "", List.of(
+                        new Organisation.Position(1993, Month.SEPTEMBER, 1996, Month.JULY, "Student",
+                                "Аспирантура (программист С, С++)"),
+                        new Organisation.Position(1987, Month.SEPTEMBER, 1993, Month.JULY, "Student",
+                                "Инженер (программист Fortran, C)"))))));
 
-        List<Organisation> listEducation = new ArrayList<>();
-        name = "Coursera";
-        url = "www.coursera.org/learn/scala-functional-programming";
-        startDate = LocalDate.of(2013, 3, 1);
-        endDate = LocalDate.of(2013, 5, 1);
-        title = "Student";
-        description = "Functional Programming Principles in Scala\" by Martin Odersky";
-        organisation = new Organisation(name, url, startDate, endDate, title, description);
-        listEducation.add(organisation);
-
-        name = "Luxoft";
-        url = "www.luxoft-training.ru/kurs/obektno-orientirovannyy_analiz_i_proektirovanie_na_uml.html";
-        startDate = LocalDate.of(2011, 3, 1);
-        endDate = LocalDate.of(2011, 4, 1);
-        title = "Student";
-        description = "Курс \"Объектно-ориентированный анализ ИС. Концептуальное моделирование на UML.\"";
-        organisation = new Organisation(name, url, startDate, endDate, title, description);
-        listEducation.add(organisation);
-        sections.put(EDUCATION, new OrganisationSection(listEducation));
 
         Resume r = new Resume("Кислин Григорий", contacts, sections);
 
         System.out.println("ID: " + r);
 
         System.out.println("\nКонтакты:\n");
-        for(ContactType ct : ContactType.values()) {
+        for (ContactType ct : ContactType.values()) {
             System.out.println(ct.getTitle() + ": " + r.getContact(ct));
         }
 
-        for(SectionType st : SectionType.values()) {
+        for (SectionType st : SectionType.values()) {
             System.out.println(st.getTitle() + ": " + r.getSection(st));
         }
     }
