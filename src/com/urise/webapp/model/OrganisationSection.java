@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Objects;
 
 public class OrganisationSection implements Section {
+    private static final long serialVersionUID = 1L;
+
     private final List<Organisation> organisations;
 
     public OrganisationSection(Organisation... organisations) {

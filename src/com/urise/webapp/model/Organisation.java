@@ -1,15 +1,19 @@
 package com.urise.webapp.model;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+
 import com.urise.webapp.util.DateUtil;
 
 
-public class Organisation {
+public class Organisation implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     private final Link homepage;
     private List<Position> positions = new ArrayList<>();
 
@@ -49,7 +53,7 @@ public class Organisation {
         return Objects.hash(homepage, positions);
     }
 
-    public static class Position {
+    public static class Position implements Serializable {
 
         private final LocalDate startDate;
         private final LocalDate endDate;
@@ -65,9 +69,9 @@ public class Organisation {
         }
 
         public Position(LocalDate startDate, LocalDate endDate, String title, String description) {
-            Objects.requireNonNull(startDate,"beginDate must not be null");
-            Objects.requireNonNull(endDate,"endDate must not be null");
-            Objects.requireNonNull(title,"title must not be null");
+            Objects.requireNonNull(startDate, "beginDate must not be null");
+            Objects.requireNonNull(endDate, "endDate must not be null");
+            Objects.requireNonNull(title, "title must not be null");
             this.startDate = startDate;
             this.endDate = endDate;
             this.title = title;
