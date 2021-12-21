@@ -61,7 +61,7 @@ public class ResumeTestData {
 
         sections.put(EXPERIENCE, new OrganisationSection(List.of(
                 new Organisation("JavaOps", "javaops.ru", List.of(
-                        new Organisation.Position(2013, Month.OCTOBER, 2021, Month.DECEMBER, "Автор проекта",
+                        new Organisation.Position(2013, Month.OCTOBER, "Автор проекта",
                                 "Создание, организация и проведение Java онлайн проектов и стажировок."))),
                 new Organisation("Wrike", "wrike.com/vn/", List.of(
                         new Organisation.Position(2014, Month.OCTOBER, 2016, Month.OCTOBER, "Старший разработчик (backend)",

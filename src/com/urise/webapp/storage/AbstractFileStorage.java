@@ -1,6 +1,5 @@
 package com.urise.webapp.storage;
 
-import com.urise.webapp.exception.NotExistStorageException;
 import com.urise.webapp.exception.StorageException;
 import com.urise.webapp.model.Resume;
 
@@ -27,17 +26,18 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     @Override
     public void clear() {
         File[] files = directory.listFiles();
-        if (files != null && files.length > 0) {
-            for (int i = 0; i < size(); i++) {
-                files[i].delete();
+        if (files != null) {
+            for (File file : files) {
+                doDelete(file);
             }
         }
     }
 
     @Override
     public int size() {
-        if(directory.listFiles() == null) throw new StorageException("Error of directory reading", null);
-        return directory.listFiles().length;
+        String[] list = directory.list();
+        if(list == null) throw new StorageException("Directory read error", null);
+        return list.length;
     }
 
     @Override
@@ -50,7 +50,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
         try {
             doWrite(r, file);
         } catch (IOException e) {
-            throw new StorageException("IO error", r.getUuid(), e);
+            throw new StorageException("File write error", r.getUuid(), e);
         }
     }
 
@@ -63,37 +63,38 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     protected void doSave(Resume r, File file) {
         try {
             file.createNewFile();
-            doWrite(r, file);
         } catch (IOException e) {
-            throw new StorageException("IO error", file.getName(), e);
+            throw new StorageException("Couldn't create file " + file.getAbsolutePath(), file.getName(), e);
         }
+        doUpdate(r, file);
     }
 
     protected abstract void doWrite(Resume r, File file) throws IOException;
+
+    protected abstract Resume doRead(File file) throws IOException;
 
     @Override
     protected Resume doGet(File file) {
         try {
             return doRead(file);
         } catch (IOException e) {
-            throw new StorageException("Error: file not reading", file.getName(), e);
+            throw new StorageException("File read error", file.getName(), e);
         }
     }
 
-    protected abstract Resume doRead(File file) throws IOException;
-
     @Override
     protected void doDelete(File file) {
-        if(!file.delete()) throw new StorageException("Error: file not deleted ", file.getName());
+        if(!file.delete()) throw new StorageException("File delete error ", file.getName());
     }
 
     @Override
     protected List<Resume> doCopyAll() {
-        List<Resume> result = new ArrayList<>();
-        if(directory.listFiles() == null) throw new StorageException("Error: directory does not exists", null);
-        for(File file : directory.listFiles()) {
-            result.add(doGet(file));
+        File[] files = directory.listFiles();
+        if(files == null) throw new StorageException("Directory read error", null);
+        List<Resume> list  = new ArrayList<>(files.length);
+        for(File file : files) {
+            list.add(doGet(file));
         }
-        return result;
+        return list;
     }
 }

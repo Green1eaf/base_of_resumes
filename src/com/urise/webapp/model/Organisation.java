@@ -2,15 +2,27 @@ package com.urise.webapp.model;
 
 import java.time.LocalDate;
 import java.time.Month;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import com.urise.webapp.util.DateUtil;
 
+
 public class Organisation {
     private final Link homepage;
+    private List<Position> positions = new ArrayList<>();
 
-    private final List<Position> positions;
+    public Organisation(String name, String url, Position... positions) {
+        this(new Link(name, url), Arrays.asList(positions));
+    }
 
+    public Organisation(Link homepage, List<Position> positions) {
+        this.homepage = homepage;
+        this.positions = positions;
+    }
+
+    //this constructor for ResumeTestData
     public Organisation(String name, String url, List<Position> list) {
         this.homepage = new Link(name, url);
         positions = list;
@@ -18,7 +30,7 @@ public class Organisation {
 
     @Override
     public String toString() {
-        return homepage + ": positions=" + positions;
+        return "Organization(" + homepage + "," + positions + ')';
     }
 
     @Override
@@ -28,15 +40,13 @@ public class Organisation {
 
         Organisation that = (Organisation) o;
 
-        if (!homepage.equals(that.homepage)) return false;
-        return positions.equals(that.positions);
+        return Objects.equals(homepage, that.homepage) &&
+                Objects.equals(positions, that.positions);
     }
 
     @Override
     public int hashCode() {
-        int result = homepage.hashCode();
-        result = 31 * result + positions.hashCode();
-        return result;
+        return Objects.hash(homepage, positions);
     }
 
     public static class Position {
@@ -46,8 +56,12 @@ public class Organisation {
         private final String title;
         private final String description;
 
+        public Position(int startYear, Month startMonth, String title, String description) {
+            this(DateUtil.of(startYear, startMonth), DateUtil.NOW, title, description);
+        }
+
         public Position(int startYear, Month startMonth, int endYear, Month endMonth, String title, String description) {
-            this(DateUtil.of(startYear, startMonth), DateUtil.of(startYear, endMonth), title, description);
+            this(DateUtil.of(startYear, startMonth), DateUtil.of(endYear, endMonth), title, description);
         }
 
         public Position(LocalDate startDate, LocalDate endDate, String title, String description) {
@@ -60,36 +74,41 @@ public class Organisation {
             this.description = description;
         }
 
+        public LocalDate getStartDate() {
+            return startDate;
+        }
+
+        public LocalDate getEndDate() {
+            return endDate;
+        }
+
+        public String getTitle() {
+            return title;
+        }
+
+        public String getDescription() {
+            return description;
+        }
+
         @Override
         public String toString() {
-            return "Position{" +
-                    "startDate=" + startDate +
-                    ", endDate=" + endDate +
-                    ", title='" + title + '\'' +
-                    ", description='" + description + '\'' +
-                    '}';
+            return "Position(" + startDate + ',' + endDate + ',' + title + ',' + description + ')';
         }
 
         @Override
         public boolean equals(Object o) {
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
-
             Position position = (Position) o;
-
-            if (!startDate.equals(position.startDate)) return false;
-            if (!endDate.equals(position.endDate)) return false;
-            if (!title.equals(position.title)) return false;
-            return description.equals(position.description);
+            return Objects.equals(startDate, position.startDate) &&
+                    Objects.equals(endDate, position.endDate) &&
+                    Objects.equals(title, position.title) &&
+                    Objects.equals(description, position.description);
         }
 
         @Override
         public int hashCode() {
-            int result = startDate.hashCode();
-            result = 31 * result + endDate.hashCode();
-            result = 31 * result + title.hashCode();
-            result = 31 * result + description.hashCode();
-            return result;
+            return Objects.hash(startDate, endDate, title, description);
         }
     }
 }
