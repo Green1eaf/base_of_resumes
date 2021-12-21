@@ -2,23 +2,24 @@ package com.urise.webapp.storage;
 
 import com.urise.webapp.exception.StorageException;
 import com.urise.webapp.model.Resume;
+import com.urise.webapp.storage.serializator.Serializator;
 
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class PathStorage extends AbstractStorage<Path> {
     private Path directory;
 
-    private SaveStrategy strategy;
+    private Serializator serializator;
 
-    protected PathStorage(String dir, SaveStrategy strategy) {
-        this.strategy = strategy;
+    protected PathStorage(String dir, Serializator strategy) {
+        this.serializator = strategy;
 
         directory = Paths.get(dir);
         Objects.requireNonNull(directory, "directory must not be null");
@@ -45,7 +46,7 @@ public class PathStorage extends AbstractStorage<Path> {
     @Override
     protected void doUpdate(Resume r, Path path) {
         try {
-            strategy.doWrite(r, new BufferedOutputStream(Files.newOutputStream(path)));
+            serializator.doWrite(r, new BufferedOutputStream(Files.newOutputStream(path)));
         } catch (IOException e) {
             throw new StorageException("Path write error", r.getUuid(), e);
         }
@@ -69,7 +70,7 @@ public class PathStorage extends AbstractStorage<Path> {
     @Override
     protected Resume doGet(Path path) {
         try {
-            return strategy.doRead(new BufferedInputStream(Files.newInputStream(path)));
+            return serializator.doRead(new BufferedInputStream(Files.newInputStream(path)));
         } catch (IOException e) {
             throw new StorageException("Path read error ", path.toString(), e);
         }
@@ -86,21 +87,14 @@ public class PathStorage extends AbstractStorage<Path> {
 
     @Override
     protected List<Resume> doCopyAll() {
-        List<Path> list = getFilesPaths().toList();
-        List<Resume> result = new ArrayList<>(list.size());
-        for (Path path : list) {
-            result.add(doGet(path));
-        }
-        return result;
+        return getFilesPaths().map(this::doGet).collect(Collectors.toList());
     }
 
     private Stream<Path> getFilesPaths() {
-        Stream<Path> listPaths;
         try {
-            listPaths = Files.list(directory);
+            return Files.list(directory);
         } catch (IOException e) {
             throw new StorageException("Directory read error", null);
         }
-        return listPaths;
     }
 }
