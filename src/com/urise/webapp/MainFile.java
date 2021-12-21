@@ -3,16 +3,17 @@ package com.urise.webapp;
 import java.io.File;
 
 public class MainFile {
-    public void listFiles(String startDir) {
+    public void listFiles(String startDir, String space) {
         File dir = new File(startDir);
         File[] files = dir.listFiles();
 
         if (files != null && files.length > 0) {
             for (File file : files) {
                 if (file.isDirectory()) {
-                    listFiles(file.getAbsolutePath());
+                    System.out.println(space + "Directory: " + file.getName());
+                    listFiles(file.getAbsolutePath(), space+"\t");
                 } else {
-                    System.out.println(file.getName() + " (size in bytes: " + file.length() + ")");
+                    System.out.println(space + "File: " + file.getName() + " (size in bytes: " + file.length() + ")");
                 }
             }
         }
@@ -23,6 +24,6 @@ public class MainFile {
 
         String startDir = "./src";
 
-        test.listFiles(startDir);
+        test.listFiles(startDir, "");
     }
 }
