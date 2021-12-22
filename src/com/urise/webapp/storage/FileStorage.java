@@ -6,6 +6,7 @@ import com.urise.webapp.storage.serializator.Serializator;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -29,10 +30,7 @@ public class FileStorage extends AbstractStorage<File> {
 
     @Override
     public void clear() {
-        File[] files = filesArray();
-        for (File file : files) {
-            doDelete(file);
-        }
+        Arrays.stream(filesArray()).forEach(this::doDelete);
     }
 
     @Override
