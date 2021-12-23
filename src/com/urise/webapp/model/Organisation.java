@@ -9,32 +9,40 @@ import java.util.List;
 import java.util.Objects;
 
 import com.urise.webapp.util.DateUtil;
+import com.urise.webapp.util.LocalDateAdapter;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Organisation implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    private final Link homepage;
+    private Link homePage;
     private List<Position> positions = new ArrayList<>();
+
+    public Organisation() {
+    }
 
     public Organisation(String name, String url, Position... positions) {
         this(new Link(name, url), Arrays.asList(positions));
     }
 
-    public Organisation(Link homepage, List<Position> positions) {
-        this.homepage = homepage;
+    public Organisation(Link homePage, List<Position> positions) {
+        this.homePage = homePage;
         this.positions = positions;
     }
 
     //this constructor for ResumeTestData
     public Organisation(String name, String url, List<Position> list) {
-        this.homepage = new Link(name, url);
+        this.homePage = new Link(name, url);
         positions = list;
     }
 
     @Override
     public String toString() {
-        return "Organization(" + homepage + "," + positions + ')';
+        return "Organization(" + homePage + "," + positions + ')';
     }
 
     @Override
@@ -44,21 +52,26 @@ public class Organisation implements Serializable {
 
         Organisation that = (Organisation) o;
 
-        return Objects.equals(homepage, that.homepage) &&
+        return Objects.equals(homePage, that.homePage) &&
                 Objects.equals(positions, that.positions);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(homepage, positions);
+        return Objects.hash(homePage, positions);
     }
 
+    @XmlAccessorType(XmlAccessType.FIELD)
     public static class Position implements Serializable {
+        @XmlJavaTypeAdapter(LocalDateAdapter.class)
+        private LocalDate startDate;
+        @XmlJavaTypeAdapter(LocalDateAdapter.class)
+        private LocalDate endDate;
+        private String title;
+        private String description;
 
-        private final LocalDate startDate;
-        private final LocalDate endDate;
-        private final String title;
-        private final String description;
+        public Position() {
+        }
 
         public Position(int startYear, Month startMonth, String title, String description) {
             this(DateUtil.of(startYear, startMonth), DateUtil.NOW, title, description);

@@ -25,7 +25,7 @@ public class ResumeTestData {
         sections.put(PERSONAL, new TextSection("Аналитический склад ума, сильная логика, креативность, инициативность. Пурист кода и архитектуры."));
         sections.put(OBJECTIVE, new TextSection("Ведущий стажировок и корпоративного обучения по Java Web и Enterprise технологиям"));
 
-        sections.put(ACHIEVEMENT, new ListSection(new ArrayList<>(List.of("С 2013 года: разработка проектов \"Разработка Web приложения\",\"Java Enterprise\", " +
+        sections.put(ACHIEVEMENT, new ListSection(new ArrayList<>(Arrays.asList("С 2013 года: разработка проектов \"Разработка Web приложения\",\"Java Enterprise\", " +
                         "\"Многомодульный maven. Многопоточность. XML (JAXB/StAX). Веб сервисы (JAX-RS/SOAP). Удаленное взаимодействие (JMS/AKKA)\". " +
                         "Организация онлайн стажировок и ведение проектов. Более 1000 выпускников. ",
                 "Реализация двухфакторной аутентификации для онлайн платформы управления проектами Wrike. " +
@@ -42,7 +42,7 @@ public class ResumeTestData {
                         "(Cyberplat, Eport, Chronopay, Сбербанк), Белоруcсии(Erip, Osmp) и Никарагуа."))));
 
 
-        sections.put(QUALIFICATIONS, new ListSection(new ArrayList<>(List.of("JEE AS: GlassFish (v2.1, v3), OC4J, JBoss, Tomcat, Jetty, WebLogic, WSO2",
+        sections.put(QUALIFICATIONS, new ListSection(new ArrayList<>(Arrays.asList("JEE AS: GlassFish (v2.1, v3), OC4J, JBoss, Tomcat, Jetty, WebLogic, WSO2",
                 "Version control: Subversion, Git, Mercury, ClearCase, Perforce",
                 "DB: PostgreSQL(наследование, pgplsql, PL/Python), Redis (Jedis), H2, Oracle, MySQL, SQLite, MS SQL, HSQLDB",
                 "Languages: Java, Scala, Python/Jython/PL-Python, JavaScript, Groovy, XML/XSD/XSLT, SQL, C/C++, Unix shell scripts",
@@ -59,15 +59,15 @@ public class ResumeTestData {
                 "Родной русский, английский \"upper intermediate\""))));
 
 
-        sections.put(EXPERIENCE, new OrganisationSection(List.of(
-                new Organisation("JavaOps", "javaops.ru", List.of(
+        sections.put(EXPERIENCE, new OrganisationSection(Arrays.asList(
+                new Organisation("JavaOps", "javaops.ru", Arrays.asList(
                         new Organisation.Position(2013, Month.OCTOBER, "Автор проекта",
                                 "Создание, организация и проведение Java онлайн проектов и стажировок."))),
-                new Organisation("Wrike", "wrike.com/vn/", List.of(
+                new Organisation("Wrike", "wrike.com/vn/", Arrays.asList(
                         new Organisation.Position(2014, Month.OCTOBER, 2016, Month.OCTOBER, "Старший разработчик (backend)",
                                 "Проектирование и разработка онлайн платформы управления проектами Wrike (Java 8 API, Maven, Spring, MyBatis, Guava, Vaadin, PostgreSQL, Redis). " +
                                         "Двухфакторная аутентификация, авторизация по OAuth1, OAuth2, JWT SSO."))),
-                new Organisation("RIT Center", "RIT Center", List.of(
+                new Organisation("RIT Center", "RIT Center", Arrays.asList(
                         new Organisation.Position(2012, Month.APRIL, 2014, Month.OCTOBER, "Java архитектор",
                                 "Организация процесса разработки системы ERP для разных окружений: релизная политика, версионирование, " +
                                         "ведение CI (Jenkins), миграция базы (кастомизация Flyway), конфигурирование системы (pgBoucer, Nginx), AAA via SSO. " +
@@ -77,14 +77,14 @@ public class ResumeTestData {
                                         "OpenCmis, Bonita, Python scripting, Unix shell remote scripting via ssh tunnels, PL/Python"))))));
 
 
-        sections.put(EDUCATION, new OrganisationSection(List.of(
-                new Organisation("Coursera", "www.coursera.org/learn/scala-functional-programming", List.of(
+        sections.put(EDUCATION, new OrganisationSection(Arrays.asList(
+                new Organisation("Coursera", "www.coursera.org/learn/scala-functional-programming", Arrays.asList(
                         new Organisation.Position(2013, Month.MARCH, 2013, Month.MAY, "Student",
                                 "Functional Programming Principles in Scala\" by Martin Odersky"))),
-                new Organisation("Luxoft", "www.luxoft-training.ru/kurs/obektno-orientirovannyy_analiz_i_proektirovanie_na_uml.html", List.of(
+                new Organisation("Luxoft", "www.luxoft-training.ru/kurs/obektno-orientirovannyy_analiz_i_proektirovanie_na_uml.html", Arrays.asList(
                         new Organisation.Position(2011, Month.MARCH, 2013, Month.APRIL, "Student",
                                 "Курс \"Объектно-ориентированный анализ ИС. Концептуальное моделирование на UML.\""))),
-                new Organisation("Санкт-Петербургский национальный исследовательский университет информационных технологий, механики и оптики", "", List.of(
+                new Organisation("Санкт-Петербургский национальный исследовательский университет информационных технологий, механики и оптики", "", Arrays.asList(
                         new Organisation.Position(1993, Month.SEPTEMBER, 1996, Month.JULY, "Student",
                                 "Аспирантура (программист С, С++)"),
                         new Organisation.Position(1987, Month.SEPTEMBER, 1993, Month.JULY, "Student",
