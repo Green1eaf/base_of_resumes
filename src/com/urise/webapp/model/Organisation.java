@@ -40,6 +40,14 @@ public class Organisation implements Serializable {
         positions = list;
     }
 
+    public Link getHomePage() {
+        return homePage;
+    }
+
+    public List<Position> getPositions() {
+        return positions;
+    }
+
     @Override
     public String toString() {
         return "Organization(" + homePage + "," + positions + ')';
