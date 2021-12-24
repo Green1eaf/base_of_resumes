@@ -7,13 +7,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
-
-import com.urise.webapp.util.DateUtil;
-import com.urise.webapp.util.LocalDateAdapter;
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
+import com.urise.webapp.util.LocalDateAdapter;
+
+import static com.urise.webapp.util.DateUtil.NOW;
+import static com.urise.webapp.util.DateUtil.of;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Organisation implements Serializable {
@@ -32,12 +33,6 @@ public class Organisation implements Serializable {
     public Organisation(Link homePage, List<Position> positions) {
         this.homePage = homePage;
         this.positions = positions;
-    }
-
-    //this constructor for ResumeTestData
-    public Organisation(String name, String url, List<Position> list) {
-        this.homePage = new Link(name, url);
-        positions = list;
     }
 
     public Link getHomePage() {
@@ -82,11 +77,11 @@ public class Organisation implements Serializable {
         }
 
         public Position(int startYear, Month startMonth, String title, String description) {
-            this(DateUtil.of(startYear, startMonth), DateUtil.NOW, title, description);
+            this(of(startYear, startMonth), NOW, title, description);
         }
 
         public Position(int startYear, Month startMonth, int endYear, Month endMonth, String title, String description) {
-            this(DateUtil.of(startYear, startMonth), DateUtil.of(endYear, endMonth), title, description);
+            this(of(startYear, startMonth), of(endYear, endMonth), title, description);
         }
 
         public Position(LocalDate startDate, LocalDate endDate, String title, String description) {
@@ -96,7 +91,7 @@ public class Organisation implements Serializable {
             this.startDate = startDate;
             this.endDate = endDate;
             this.title = title;
-            this.description = description;
+            this.description = description == null ? "" : description;
         }
 
         public LocalDate getStartDate() {
