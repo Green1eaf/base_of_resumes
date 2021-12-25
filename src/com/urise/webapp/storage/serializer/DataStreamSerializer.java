@@ -125,7 +125,7 @@ public class DataStreamSerializer implements StreamSerializer {
         void read() throws IOException;
     }
 
-    private <T> void readResumePart(DataInputStream dis, PartReader reader) throws IOException {
+    private void readResumePart(DataInputStream dis, PartReader reader) throws IOException {
         int size = dis.readInt();
         for (int i = 0; i < size; i++) {
             reader.read();
