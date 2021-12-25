@@ -38,8 +38,9 @@ public class DataStreamSerializer implements StreamSerializer {
                     case EXPERIENCE:
                     case EDUCATION:
                         writeCollection(dos, ((OrganisationSection) section).getOrganisations(), organisation -> {
-                            dos.writeUTF(organisation.getHomePage().getName());
-                            dos.writeUTF(organisation.getHomePage().getUrl());
+                            Link link = organisation.getHomePage();
+                            dos.writeUTF(link.getName());
+                            dos.writeUTF(link.getUrl());
                             writeCollection(dos, organisation.getPositions(), position -> {
                                 writeLocalDate(dos, position.getStartDate());
                                 writeLocalDate(dos, position.getEndDate());

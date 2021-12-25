@@ -35,6 +35,12 @@ public class Organisation implements Serializable {
         this.positions = positions;
     }
 
+    //this constructor for ResumeTestData
+    public Organisation(String name, String url, List<Position> list) {
+        this.homePage = new Link(name, url);
+        positions = list;
+    }
+
     public Link getHomePage() {
         return homePage;
     }
