@@ -11,7 +11,7 @@ public class MainFile {
             for (File file : files) {
                 if (file.isDirectory()) {
                     System.out.println(space + "Directory: " + file.getName());
-                    listFiles(file.getAbsolutePath(), space+"\t");
+                    listFiles(file.getAbsolutePath(), space + "\t");
                 } else {
                     System.out.println(space + "File: " + file.getName() + " (size in bytes: " + file.length() + ")");
                 }

@@ -12,7 +12,7 @@ public class JsonParser {
             .registerTypeAdapter(Section.class, new JsonSectionAdapter())
             .create();
 
-    public static <T> T read (Reader reader, Class<T> clazz) {
+    public static <T> T read(Reader reader, Class<T> clazz) {
         return GSON.fromJson(reader, clazz);
     }
 

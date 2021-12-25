@@ -84,7 +84,7 @@ public class DataStreamSerializer implements StreamSerializer {
             case EXPERIENCE:
             case EDUCATION:
                 return new OrganisationSection(
-                        readList(dis, () ->new Organisation(
+                        readList(dis, () -> new Organisation(
                                 new Link(dis.readUTF(), dis.readUTF()),
                                 readList(dis, () -> new Organisation.Position(
                                         readLocalDate(dis), readLocalDate(dis), dis.readUTF(), dis.readUTF()
