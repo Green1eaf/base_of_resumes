@@ -1,6 +1,5 @@
 package com.urise.webapp.storage;
 
-import com.sun.org.apache.xpath.internal.operations.Or;
 import com.urise.webapp.model.*;
 
 import java.time.Month;
@@ -94,13 +93,14 @@ public class ResumeTestData {
                         new Organisation.Position(1987, Month.SEPTEMBER, 1993, Month.JULY, "Student",
                                 "Инженер (программист Fortran, C)"))))));
     }
+
     public static Resume createResume(String uuid, String name) {
         return new Resume(uuid, name, contacts, sections);
     }
 
     public static void main(String[] args) {
 
-        Resume r = createResume("uuid1","Кислин Григорий");
+        Resume r = createResume("uuid1", "Кислин Григорий");
 
         System.out.println("ID: " + r);
 
