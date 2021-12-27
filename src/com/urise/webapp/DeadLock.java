@@ -14,6 +14,7 @@ public class DeadLock {
 }
 
 class Thread1 extends Thread {
+    @Override
     public void run() {
         System.out.println("Thread1: попытка захватить монитор lock1");
         synchronized (DeadLock.lock1) {
@@ -27,6 +28,7 @@ class Thread1 extends Thread {
 }
 
 class Thread2 extends Thread {
+    @Override
     public void run() {
         System.out.println("Thread2: попытка захватить монитор lock2");
         synchronized (DeadLock.lock2) {
