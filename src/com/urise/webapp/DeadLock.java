@@ -25,6 +25,7 @@ public class DeadLock {
                     System.out.println(name + ": мониторы " + lock1 + " и " + lock2 + " захвачены");
                 }
             }
+
         }).start();
     }
 }
