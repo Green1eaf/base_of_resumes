@@ -4,18 +4,14 @@ import com.urise.webapp.Config;
 import com.urise.webapp.exception.ExistStorageException;
 import com.urise.webapp.exception.NotExistStorageException;
 import com.urise.webapp.model.*;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.io.File;
-import java.time.Month;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 public abstract class AbstractStorageTest {
     protected static final File STORAGE_DIR = Config.get().getStorageDir();
@@ -28,8 +24,8 @@ public abstract class AbstractStorageTest {
     private static final String UUID_4 = "uuid4";
 
     private static final Resume R1 = new Resume(UUID_1, "Petrov Ivan");
-    private static final Resume R2 = ResumeTestData.createResume(UUID_2, "Ivanova Elena");
-    private static final Resume R3 = ResumeTestData.createResume(UUID_3, "Petrov Ivan");
+    private static final Resume R2 = new Resume(UUID_2, "Ivanova Elena");
+    private static final Resume R3 = new Resume(UUID_3, "Petrov Ivan");
     private static final Resume R4 = new Resume(UUID_4, "name");
 
     protected AbstractStorageTest(Storage storage) {
@@ -102,7 +98,7 @@ public abstract class AbstractStorageTest {
     public void getAllSorted() {
         List<Resume> list = storage.getAllSorted();
         assertEquals(3, list.size());
-        assertEquals(list, Arrays.asList(R2, R1, R3));
+        assertEquals(Arrays.asList(R2, R1, R3), list);
     }
 
     @Test
