@@ -9,7 +9,11 @@ import org.junit.Test;
 
 import java.io.File;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
+import java.util.UUID;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static org.junit.Assert.assertEquals;
 
@@ -18,10 +22,10 @@ public abstract class AbstractStorageTest {
 
     protected Storage storage;
 
-    private static final String UUID_1 = "uuid1";
-    private static final String UUID_2 = "uuid2";
-    private static final String UUID_3 = "uuid3";
-    private static final String UUID_4 = "uuid4";
+    private static final String UUID_1 = UUID.randomUUID().toString();
+    private static final String UUID_2 = UUID.randomUUID().toString();
+    private static final String UUID_3 = UUID.randomUUID().toString();
+    private static final String UUID_4 = UUID.randomUUID().toString();
 
     private static final Resume R1 = new Resume(UUID_1, "Petrov Ivan");
     private static final Resume R2 = new Resume(UUID_2, "Ivanova Elena");
@@ -96,9 +100,12 @@ public abstract class AbstractStorageTest {
 
     @Test
     public void getAllSorted() {
-        List<Resume> list = storage.getAllSorted();
-        assertEquals(3, list.size());
-        assertEquals(Arrays.asList(R2, R1, R3), list);
+        List<Resume> actual = storage.getAllSorted();
+        assertEquals(3, actual.size());
+        List<Resume> expected = Stream.of(R1, R2, R3)
+                .sorted(Comparator.comparing(Resume::getFullName).thenComparing(Resume::getUuid))
+                .collect(Collectors.toList());
+        assertEquals(expected, actual);
     }
 
     @Test

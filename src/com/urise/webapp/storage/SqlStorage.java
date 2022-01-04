@@ -32,13 +32,6 @@ public class SqlStorage implements Storage {
 
     @Override
     public void save(Resume r) {
-        Resume test = sqlHelper.execute("SELECT * FROM resume r WHERE r.uuid =?", ps->{
-            ps.setString(1, r.getUuid());
-            ResultSet rs = ps.executeQuery();
-            if(!rs.next()) return null;
-            return new Resume();
-        });
-        if (test != null) throw new ExistStorageException(r.getUuid());
         sqlHelper.execute("INSERT INTO resume (uuid, full_name) VALUES (?, ?)", ps -> {
             ps.setString(1, r.getUuid());
             ps.setString(2, r.getFullName());
@@ -69,14 +62,12 @@ public class SqlStorage implements Storage {
 
     @Override
     public List<Resume> getAllSorted() {
-        return sqlHelper.execute("SELECT * FROM resume", ps -> {
+        return sqlHelper.execute("SELECT * FROM resume ORDER BY full_name, uuid", ps -> {
             ResultSet rs = ps.executeQuery();
             List<Resume> result = new ArrayList<>();
             while (rs.next()) {
-                String uuid = rs.getString(1);
-                result.add(new Resume(uuid.replaceAll(" ", ""), rs.getString(2)));
+                result.add(new Resume(rs.getString(1), rs.getString(2)));
             }
-            result.sort(Comparator.comparing(Resume::getFullName).thenComparing(Resume::getUuid));
             return result;
         });
     }
