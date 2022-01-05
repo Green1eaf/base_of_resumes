@@ -8,10 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.File;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -102,9 +99,8 @@ public abstract class AbstractStorageTest {
     public void getAllSorted() {
         List<Resume> actual = storage.getAllSorted();
         assertEquals(3, actual.size());
-        List<Resume> expected = Stream.of(R1, R2, R3)
-                .sorted(Comparator.comparing(Resume::getFullName).thenComparing(Resume::getUuid))
-                .collect(Collectors.toList());
+        List<Resume> expected = Arrays.asList(R1, R2, R3);
+        Collections.sort(expected);
         assertEquals(expected, actual);
     }
 
