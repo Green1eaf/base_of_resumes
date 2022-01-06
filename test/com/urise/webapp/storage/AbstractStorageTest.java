@@ -10,6 +10,7 @@ import org.junit.Test;
 import java.io.File;
 import java.util.*;
 
+import static com.urise.webapp.model.ContactType.*;
 import static org.junit.Assert.assertEquals;
 
 public abstract class AbstractStorageTest {
@@ -26,6 +27,15 @@ public abstract class AbstractStorageTest {
     private static final Resume R2 = new Resume(UUID_2, "Ivanova Elena");
     private static final Resume R3 = new Resume(UUID_3, "Petrov Ivan");
     private static final Resume R4 = new Resume(UUID_4, "name");
+
+    static {
+        R1.addContact(PHONE, "+7(921) 855-0482");
+        R1.addContact(SKYPE, "grigory.kislin");
+        R2.addContact(MAIL, "gkislin@yandex.ru");
+        R2.addContact(GITHUB, "github.com/gkislin");
+        R3.addContact(LINKEDIN, "linkedin.com/in/gkislin");
+        R4.addContact(HOMEPAGE, "gkislin.ru/");
+    }
 
     protected AbstractStorageTest(Storage storage) {
         this.storage = storage;

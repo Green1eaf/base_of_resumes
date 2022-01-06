@@ -22,19 +22,19 @@ public class SqlStorage implements Storage {
 
     @Override
     public void update(Resume r) {
+        String uuid = r.getUuid();
         sqlHelper.transactionalExecute(conn -> {
             try (PreparedStatement ps = conn.prepareStatement("UPDATE resume SET full_name = ? WHERE uuid = ?")) {
                 ps.setString(1, r.getFullName());
-                ps.setString(2, r.getUuid());
+                ps.setString(2, uuid);
                 if (ps.executeUpdate() == 0) {
-                    throw new NotExistStorageException(r.getUuid());
+                    throw new NotExistStorageException(uuid);
                 }
             }
-            sqlHelper.execute("DELETE FROM contact WHERE resume_uuid=?", ps -> {
-                ps.setString(1, r.getUuid());
+            try (PreparedStatement ps = conn.prepareStatement("DELETE FROM contact WHERE resume_uuid=?")) {
+                ps.setString(1, uuid);
                 ps.execute();
-                return null;
-            });
+            }
             insertContacts(r, conn);
             return null;
         });
@@ -67,10 +67,7 @@ public class SqlStorage implements Storage {
                     if (!rs.next()) throw new NotExistStorageException(uuid);
                     Resume r = new Resume(uuid, rs.getString("full_name"));
                     do {
-                        String value = rs.getString("value");
-                        if (value != null) {
-                            r.addContact(ContactType.valueOf(rs.getString("type")), value);
-                        }
+                        insertContactSection(rs, r);
                     } while (rs.next());
 
                     return r;
@@ -89,21 +86,21 @@ public class SqlStorage implements Storage {
     @Override
     public List<Resume> getAllSorted() {
         return sqlHelper.execute("" +
-                "   SELECT * FROM resume r\n" +
-                "LEFT JOIN contact c ON r.uuid=c.resume_uuid\n" +
+                "   SELECT * FROM resume r " +
+                "LEFT JOIN contact c ON r.uuid=c.resume_uuid " +
                 " ORDER BY full_name, uuid", ps -> {
             ResultSet rs = ps.executeQuery();
-            List<Resume> result = new ArrayList<>();
+            Map<String, Resume> result = new LinkedHashMap<>();
             while (rs.next()) {
                 String uuid = rs.getString("uuid");
-                Resume r = new Resume(uuid, rs.getString("full_name"));
-                String value = rs.getString("value");
-                if (value != null) {
-                    r.addContact(ContactType.valueOf(rs.getString("type")), value);
+                Resume r = result.get(uuid);
+                if (r == null) {
+                    r = new Resume(uuid, rs.getString("full_name"));
                 }
-                result.add(r);
+                insertContactSection(rs, r);
+                result.put(uuid, r);
             }
-            return result;
+            return new ArrayList<>(result.values());
         });
     }
 
@@ -124,6 +121,13 @@ public class SqlStorage implements Storage {
                 ps.addBatch();
             }
             ps.executeBatch();
+        }
+    }
+
+    private void insertContactSection(ResultSet rs, Resume r) throws SQLException {
+        String value = rs.getString("value");
+        if (value != null) {
+            r.addContact(ContactType.valueOf(rs.getString("type")), value);
         }
     }
 }
