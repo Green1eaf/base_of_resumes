@@ -22,8 +22,8 @@ public class SqlStorage implements Storage {
 
     @Override
     public void update(Resume r) {
-        String uuid = r.getUuid();
         sqlHelper.transactionalExecute(conn -> {
+            String uuid = r.getUuid();
             try (PreparedStatement ps = conn.prepareStatement("UPDATE resume SET full_name = ? WHERE uuid = ?")) {
                 ps.setString(1, r.getFullName());
                 ps.setString(2, uuid);
@@ -67,7 +67,7 @@ public class SqlStorage implements Storage {
                     if (!rs.next()) throw new NotExistStorageException(uuid);
                     Resume r = new Resume(uuid, rs.getString("full_name"));
                     do {
-                        insertContactSection(rs, r);
+                        addContact(rs, r);
                     } while (rs.next());
 
                     return r;
@@ -97,7 +97,7 @@ public class SqlStorage implements Storage {
                 if (r == null) {
                     r = new Resume(uuid, rs.getString("full_name"));
                 }
-                insertContactSection(rs, r);
+                addContact(rs, r);
                 result.put(uuid, r);
             }
             return new ArrayList<>(result.values());
@@ -124,7 +124,7 @@ public class SqlStorage implements Storage {
         }
     }
 
-    private void insertContactSection(ResultSet rs, Resume r) throws SQLException {
+    private void addContact(ResultSet rs, Resume r) throws SQLException {
         String value = rs.getString("value");
         if (value != null) {
             r.addContact(ContactType.valueOf(rs.getString("type")), value);

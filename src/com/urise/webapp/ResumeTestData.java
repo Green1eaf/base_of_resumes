@@ -95,7 +95,7 @@ public class ResumeTestData {
     }
 
     public static Resume createResume(String uuid, String name) {
-        return new Resume(uuid, name, contacts, sections);
+        return new Resume(uuid, name, contacts);
     }
 
     public static void main(String[] args) {
