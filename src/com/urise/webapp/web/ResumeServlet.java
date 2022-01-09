@@ -22,8 +22,31 @@ public class ResumeServlet extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
         PrintWriter writer = response.getWriter();
 
-        writer.println("<table>\n" +
-                "<tbody>\n" +
+        writer.println("<!DOCTYPE html>\n" +
+                "<html>\n" +
+                "<head>\n" +
+                "<style>\n" +
+                "table {\n" +
+                "  font-family: arial, sans-serif;\n" +
+                "  border-collapse: collapse;\n" +
+                "  width: 100%;\n" +
+                "}\n" +
+                "\n" +
+                "td, th {\n" +
+                "  border: 1px solid #dddddd;\n" +
+                "  text-align: left;\n" +
+                "  padding: 8px;\n" +
+                "}\n" +
+                "\n" +
+                "tr:nth-child(even) {\n" +
+                "  background-color: #dddddd;\n" +
+                "}\n" +
+                "</style>\n" +
+                "</head>\n" +
+                "<body>\n" +
+                "\n" +
+                "<h2>Resumes</h2>" +
+                "<table>\n" +
                 "<tr>\n" +
                 "<th>UUID</th>\n" +
                 "<th>Full Name</th>\n" +
@@ -36,7 +59,9 @@ public class ResumeServlet extends HttpServlet {
             writer.println("</tr>");
         }
 
-        writer.println("</tbody\n" +
-                "</table>");
+        writer.println("</table>\n" +
+                "\n" +
+                "</body>\n" +
+                "</html>");
     }
 }
