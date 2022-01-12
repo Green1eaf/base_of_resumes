@@ -63,39 +63,39 @@ public class ResumeTestData {
                 "Родной русский, английский \"upper intermediate\""))));
 
 
-        sections.put(EXPERIENCE, new OrganisationSection(Arrays.asList(
-                new Organisation("JavaOps", "javaops.ru", Arrays.asList(
-                        new Organisation.Position(2013, Month.OCTOBER, "Автор проекта",
-                                "Создание, организация и проведение Java онлайн проектов и стажировок."))),
-                new Organisation("Wrike", "wrike.com/vn/", Arrays.asList(
-                        new Organisation.Position(2014, Month.OCTOBER, 2016, Month.OCTOBER, "Старший разработчик (backend)",
-                                "Проектирование и разработка онлайн платформы управления проектами Wrike (Java 8 API, Maven, Spring, MyBatis, Guava, Vaadin, PostgreSQL, Redis). " +
-                                        "Двухфакторная аутентификация, авторизация по OAuth1, OAuth2, JWT SSO."))),
-                new Organisation("RIT Center", "RIT Center", Arrays.asList(
-                        new Organisation.Position(2012, Month.APRIL, 2014, Month.OCTOBER, "Java архитектор",
-                                "Организация процесса разработки системы ERP для разных окружений: релизная политика, версионирование, " +
-                                        "ведение CI (Jenkins), миграция базы (кастомизация Flyway), конфигурирование системы (pgBoucer, Nginx), AAA via SSO. " +
-                                        "Архитектура БД и серверной части системы. Разработка интергационных сервисов: CMIS, BPMN2, 1C (WebServices), сервисов " +
-                                        "общего назначения (почта, экспорт в pdf, doc, html). Интеграция Alfresco JLAN для online редактирование из браузера " +
-                                        "документов MS Office. Maven + plugin development, Ant, Apache Commons, Spring security, Spring MVC, Tomcat,WSO2, xcmis, " +
-                                        "OpenCmis, Bonita, Python scripting, Unix shell remote scripting via ssh tunnels, PL/Python"))))));
-
-        sections.put(EDUCATION, new OrganisationSection(Arrays.asList(
-                new Organisation("Coursera", "www.coursera.org/learn/scala-functional-programming", Arrays.asList(
-                        new Organisation.Position(2013, Month.MARCH, 2013, Month.MAY, "Student",
-                                "Functional Programming Principles in Scala\" by Martin Odersky"))),
-                new Organisation("Luxoft", "www.luxoft-training.ru/kurs/obektno-orientirovannyy_analiz_i_proektirovanie_na_uml.html", Arrays.asList(
-                        new Organisation.Position(2011, Month.MARCH, 2013, Month.APRIL, "Student",
-                                "Курс \"Объектно-ориентированный анализ ИС. Концептуальное моделирование на UML.\""))),
-                new Organisation("Санкт-Петербургский национальный исследовательский университет информационных технологий, механики и оптики", "", Arrays.asList(
-                        new Organisation.Position(1993, Month.SEPTEMBER, 1996, Month.JULY, "Student",
-                                "Аспирантура (программист С, С++)"),
-                        new Organisation.Position(1987, Month.SEPTEMBER, 1993, Month.JULY, "Student",
-                                "Инженер (программист Fortran, C)"))))));
+//        sections.put(EXPERIENCE, new OrganisationSection(Arrays.asList(
+//                new Organisation("JavaOps", "javaops.ru", Arrays.asList(
+//                        new Organisation.Position(2013, Month.OCTOBER, "Автор проекта",
+//                                "Создание, организация и проведение Java онлайн проектов и стажировок."))),
+//                new Organisation("Wrike", "wrike.com/vn/", Arrays.asList(
+//                        new Organisation.Position(2014, Month.OCTOBER, 2016, Month.OCTOBER, "Старший разработчик (backend)",
+//                                "Проектирование и разработка онлайн платформы управления проектами Wrike (Java 8 API, Maven, Spring, MyBatis, Guava, Vaadin, PostgreSQL, Redis). " +
+//                                        "Двухфакторная аутентификация, авторизация по OAuth1, OAuth2, JWT SSO."))),
+//                new Organisation("RIT Center", "RIT Center", Arrays.asList(
+//                        new Organisation.Position(2012, Month.APRIL, 2014, Month.OCTOBER, "Java архитектор",
+//                                "Организация процесса разработки системы ERP для разных окружений: релизная политика, версионирование, " +
+//                                        "ведение CI (Jenkins), миграция базы (кастомизация Flyway), конфигурирование системы (pgBoucer, Nginx), AAA via SSO. " +
+//                                        "Архитектура БД и серверной части системы. Разработка интергационных сервисов: CMIS, BPMN2, 1C (WebServices), сервисов " +
+//                                        "общего назначения (почта, экспорт в pdf, doc, html). Интеграция Alfresco JLAN для online редактирование из браузера " +
+//                                        "документов MS Office. Maven + plugin development, Ant, Apache Commons, Spring security, Spring MVC, Tomcat,WSO2, xcmis, " +
+//                                        "OpenCmis, Bonita, Python scripting, Unix shell remote scripting via ssh tunnels, PL/Python"))))));
+//
+//        sections.put(EDUCATION, new OrganisationSection(Arrays.asList(
+//                new Organisation("Coursera", "www.coursera.org/learn/scala-functional-programming", Arrays.asList(
+//                        new Organisation.Position(2013, Month.MARCH, 2013, Month.MAY, "Student",
+//                                "Functional Programming Principles in Scala\" by Martin Odersky"))),
+//                new Organisation("Luxoft", "www.luxoft-training.ru/kurs/obektno-orientirovannyy_analiz_i_proektirovanie_na_uml.html", Arrays.asList(
+//                        new Organisation.Position(2011, Month.MARCH, 2013, Month.APRIL, "Student",
+//                                "Курс \"Объектно-ориентированный анализ ИС. Концептуальное моделирование на UML.\""))),
+//                new Organisation("Санкт-Петербургский национальный исследовательский университет информационных технологий, механики и оптики", "", Arrays.asList(
+//                        new Organisation.Position(1993, Month.SEPTEMBER, 1996, Month.JULY, "Student",
+//                                "Аспирантура (программист С, С++)"),
+//                        new Organisation.Position(1987, Month.SEPTEMBER, 1993, Month.JULY, "Student",
+//                                "Инженер (программист Fortran, C)"))))));
     }
 
     public static Resume createResume(String uuid, String name) {
-        return new Resume(uuid, name, contacts);
+        return new Resume(uuid, name, contacts, sections);
     }
 
     public static void main(String[] args) {
