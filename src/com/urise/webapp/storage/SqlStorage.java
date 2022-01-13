@@ -7,8 +7,6 @@ import com.urise.webapp.sql.SqlHelper;
 import java.sql.*;
 import java.util.*;
 
-import static com.urise.webapp.model.SectionType.*;
-
 public class SqlStorage implements Storage {
     private final SqlHelper sqlHelper;
 
@@ -168,17 +166,15 @@ public class SqlStorage implements Storage {
                 ps.setString(1, r.getUuid());
                 SectionType sectionType = e.getKey();
                 ps.setString(2, sectionType.name());
-                String value;
-                if (sectionType == ACHIEVEMENT || sectionType == QUALIFICATIONS) {
-                    StringBuilder sb = new StringBuilder();
-                    ListSection sections = (ListSection) e.getValue();
-                    List<String> list = sections.getItems();
-                    for (String s : list) {
-                        sb.append(s).append("\n");
-                    }
-                    value = sb.toString();
-                } else {
-                    value = e.getValue().toString();
+                String value = null;
+                switch (sectionType) {
+                    case PERSONAL:
+                    case OBJECTIVE:
+                        value = String.valueOf(e.getValue());
+                        break;
+                    case ACHIEVEMENT:
+                    case QUALIFICATIONS:
+                        value = String.join("\n", ((ListSection) e.getValue()).getItems());
                 }
                 ps.setString(3, value);
                 ps.addBatch();
@@ -198,11 +194,14 @@ public class SqlStorage implements Storage {
         String type = rs.getString("type");
         String value = rs.getString("value");
         if (value != null) {
-            if (type.equals(ACHIEVEMENT.name()) || type.equals(QUALIFICATIONS.name())) {
-                List<String> list = new ArrayList<>(Arrays.asList(value.split("\n")));
-                r.addSection(SectionType.valueOf(type), new ListSection(list));
-            } else {
-                r.addSection(SectionType.valueOf(type), new TextSection(value));
+            switch (SectionType.valueOf(type)) {
+                case PERSONAL:
+                case OBJECTIVE:
+                    r.addSection(SectionType.valueOf(type), new TextSection(value));
+                    break;
+                case ACHIEVEMENT:
+                case QUALIFICATIONS:
+                    r.addSection(SectionType.valueOf(type), new ListSection(new ArrayList<>(Arrays.asList(value.split("\n")))));
             }
         }
     }

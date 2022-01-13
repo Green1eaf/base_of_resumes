@@ -11,7 +11,12 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 public class ResumeServlet extends HttpServlet {
-    private final Storage storage = Config.get().getStorage();
+    private Storage sqlStorage;
+
+    @Override
+    public void init() {
+        sqlStorage = Config.get().getStorage();
+    }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws javax.servlet.ServletException, IOException {
 
@@ -52,7 +57,7 @@ public class ResumeServlet extends HttpServlet {
                 "<th>Full Name</th>\n" +
                 "</tr>");
 
-        for (Resume r : storage.getAllSorted()) {
+        for (Resume r : sqlStorage.getAllSorted()) {
             writer.println("<tr>");
             writer.println("<td>" + r.getUuid() + "</td>");
             writer.println("<td>" + r.getFullName() + "</td>");
