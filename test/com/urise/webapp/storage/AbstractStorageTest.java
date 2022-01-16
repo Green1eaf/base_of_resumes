@@ -41,6 +41,11 @@ public abstract class AbstractStorageTest {
     }
 
     @Test
+    public void size() {
+        assertSize(3);
+    }
+
+    @Test
     public void clear() {
         storage.clear();
         assertSize(0);
@@ -59,6 +64,15 @@ public abstract class AbstractStorageTest {
     }
 
     @Test
+    public void getAllSorted() {
+        List<Resume> actual = storage.getAllSorted();
+        assertEquals(3, actual.size());
+        List<Resume> expected = Arrays.asList(R1, R2, R3);
+        Collections.sort(expected);
+        assertEquals(expected, actual);
+    }
+
+    @Test
     public void save() {
         storage.save(R4);
         assertSize(4);
@@ -68,18 +82,6 @@ public abstract class AbstractStorageTest {
     @Test(expected = ExistStorageException.class)
     public void saveExistStorageException() {
         storage.save(R1);
-    }
-
-    @Test
-    public void get() {
-        assertGet(R1);
-        assertGet(R2);
-        assertGet(R3);
-    }
-
-    @Test(expected = NotExistStorageException.class)
-    public void getNotExistStorageException() {
-        storage.get("dummy");
     }
 
     @Test(expected = NotExistStorageException.class)
@@ -95,19 +97,16 @@ public abstract class AbstractStorageTest {
     }
 
     @Test
-    public void getAllSorted() {
-        List<Resume> actual = storage.getAllSorted();
-        assertEquals(3, actual.size());
-        List<Resume> expected = Arrays.asList(R1, R2, R3);
-        Collections.sort(expected);
-        assertEquals(expected, actual);
+    public void get() {
+        assertGet(R1);
+        assertGet(R2);
+        assertGet(R3);
     }
 
-    @Test
-    public void size() {
-        assertSize(3);
+    @Test(expected = NotExistStorageException.class)
+    public void getNotExistStorageException() {
+        storage.get("dummy");
     }
-
 
     private void assertGet(Resume r) {
         assertEquals(r, storage.get(r.getUuid()));

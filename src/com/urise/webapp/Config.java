@@ -26,13 +26,6 @@ public class Config {
         } catch (IOException e) {
             throw new IllegalStateException("Invalid config file" + PROPS.getAbsolutePath());
         }
-
-        try {
-            Class.forName("org.postgresql.Driver");
-        } catch (ClassNotFoundException e) {
-            System.out.println("PostgreSQL JDBC Driver is not found. Include it in your library path ");
-            e.printStackTrace();
-        }
     }
 
     public File getStorageDir() {
