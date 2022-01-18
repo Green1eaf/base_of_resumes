@@ -1,6 +1,7 @@
 package com.urise.webapp.web;
 
 import com.urise.webapp.Config;
+import com.urise.webapp.model.ContactType;
 import com.urise.webapp.model.Resume;
 import com.urise.webapp.storage.Storage;
 
@@ -8,7 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.Writer;
 
 public class ResumeServlet extends HttpServlet {
     private Storage sqlStorage;
@@ -25,9 +26,10 @@ public class ResumeServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws javax.servlet.ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
         response.setCharacterEncoding("UTF-8");
-        PrintWriter writer = response.getWriter();
-
-        writer.println("<!DOCTYPE html>\n" +
+        //response.setHeader("Content-Type", "text/html; charset=UTF-8");
+        response.setContentType("text/html; charset=UTF-8");
+        Writer writer = response.getWriter();
+        writer.write("<!DOCTYPE html>\n" +
                 "<html>\n" +
                 "<head>\n" +
                 "<style>\n" +
@@ -53,18 +55,18 @@ public class ResumeServlet extends HttpServlet {
                 "<h2>Resumes</h2>" +
                 "<table>\n" +
                 "<tr>\n" +
-                "<th>UUID</th>\n" +
-                "<th>Full Name</th>\n" +
+                "<th>Имя</th>\n" +
+                "<th>Email</th>\n" +
                 "</tr>");
 
         for (Resume r : sqlStorage.getAllSorted()) {
-            writer.println("<tr>");
-            writer.println("<td>" + r.getUuid() + "</td>");
-            writer.println("<td>" + r.getFullName() + "</td>");
-            writer.println("</tr>");
+            writer.write("<tr>");
+            writer.write("<td>" + r.getFullName() + "</td>");
+            writer.write("<td>" + r.getContact(ContactType.MAIL) + "</td>");
+            writer.write("</tr>");
         }
 
-        writer.println("</table>\n" +
+        writer.write("</table>\n" +
                 "\n" +
                 "</body>\n" +
                 "</html>");
