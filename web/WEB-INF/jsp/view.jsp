@@ -1,3 +1,5 @@
+<%@ page import="com.urise.webapp.model.TextSection" %>
+<%@ page import="com.urise.webapp.model.ListSection" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
@@ -17,7 +19,25 @@
                          type="java.util.Map.Entry<com.urise.webapp.model.ContactType, java.lang.String>"/>
                 <%=contactEntry.getKey().toHtml(contactEntry.getValue())%><br/>
         </c:forEach>
-    </p>
+        <c:forEach var="sectionEntry" items="${resume.sections}">
+            <jsp:useBean id="sectionEntry"
+                         type="java.util.Map.Entry<com.urise.webapp.model.SectionType, com.urise.webapp.model.Section>"/>
+            <c:set var="type" value="${sectionEntry.key}"/>
+            <c:set var="section" value="${sectionEntry.value}"/>
+            <jsp:useBean id="section" type="com.urise.webapp.model.Section"/>
+    <h3><a name="type.name">${type.title}</a></h3>
+    <c:choose>
+        <c:when test="${type=='PERSONAL' || type=='OBJECTIVE'}">
+            <li><%=((TextSection) section).getContent()%>
+            </li>
+        </c:when>
+        <c:when test="${type=='ACHIEVEMENT' || type=='QUALIFICATIONS'}">
+            <c:forEach var="item" items="<%=((ListSection) section).getItems()%>">
+                <li>${item}</li>
+            </c:forEach>
+        </c:when>
+    </c:choose>
+    </c:forEach>
 </section>
 <jsp:include page="fragments/footer.jsp"/>
 </body>

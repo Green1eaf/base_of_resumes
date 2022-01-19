@@ -41,6 +41,10 @@ h2, h3 {
     margin: 15px 0 5px;
 }
 
+h1 {
+    margin: 15px 1px 3px;
+}
+
 li {
     margin: 15px 0;
 }
