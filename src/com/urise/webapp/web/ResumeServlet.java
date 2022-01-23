@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class ResumeServlet extends HttpServlet {
@@ -47,7 +49,11 @@ public class ResumeServlet extends HttpServlet {
                         break;
                     case "ACHIEVEMENT":
                     case "QUALIFICATIONS":
-                        r.addSection(type, new ListSection(List.of(value.split("\n"))));
+                        r.addSection(type, new ListSection(value.split("\n")));
+                        break;
+                    case "EXPERIENCE":
+                    case "EDUCATION":
+                        r.getSections().remove(type);
                 }
             }
         }
@@ -70,8 +76,13 @@ public class ResumeServlet extends HttpServlet {
                 response.sendRedirect("resume");
                 return;
             case "view":
+                r = storage.get(uuid);
+                r.getSections().remove(SectionType.EXPERIENCE);
+                r.getSections().remove(SectionType.EDUCATION);
+                break;
             case "edit":
                 r = storage.get(uuid);
+                //тут мы пишем логику для вставки пустышек???
                 break;
             default:
                 throw new IllegalArgumentException("Action " + action + " is illegal");
