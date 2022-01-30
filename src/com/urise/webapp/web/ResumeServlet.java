@@ -9,10 +9,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+
+import static com.urise.webapp.model.SectionType.*;
 
 public class ResumeServlet extends HttpServlet {
     private Storage storage;
@@ -77,12 +77,10 @@ public class ResumeServlet extends HttpServlet {
                 return;
             case "view":
                 r = storage.get(uuid);
-                r.getSections().remove(SectionType.EXPERIENCE);
-                r.getSections().remove(SectionType.EDUCATION);
+                removeSpaces(r); //NPE here
                 break;
             case "edit":
                 r = storage.get(uuid);
-                //тут мы пишем логику для вставки пустышек???
                 break;
             default:
                 throw new IllegalArgumentException("Action " + action + " is illegal");
@@ -91,5 +89,17 @@ public class ResumeServlet extends HttpServlet {
         request.getRequestDispatcher(
                 ("view".equals(action) ? "WEB-INF/jsp/view.jsp" : "WEB-INF/jsp/edit.jsp")
         ).forward(request, response);
+    }
+
+    public static void removeSpaces(Resume r) {
+        if (r.getSections() != null && r.getContacts()!=null) {
+            for (SectionType type : values()) {
+                if (type == ACHIEVEMENT || type == QUALIFICATIONS) {
+                    Section ls = r.getSections().get(type);
+                    List<String> list = ((ListSection) ls).getItems().stream().map(String::trim).filter(s -> s.length() > 1).collect(Collectors.toList());
+                    r.addSection(type, new ListSection(list));
+                }
+            }
+        }
     }
 }
