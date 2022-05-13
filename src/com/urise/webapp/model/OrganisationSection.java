@@ -12,8 +12,6 @@ public class OrganisationSection extends Section {
 
     private List<Organisation> organisations;
 
-    public static final OrganisationSection EMPTY = new OrganisationSection(Organisation.EMPTY);
-
     public OrganisationSection() {
     }
 

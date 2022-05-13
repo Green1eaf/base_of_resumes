@@ -27,15 +27,14 @@ public class ResumeServlet extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
         String uuid = request.getParameter("uuid");
         String fullName = request.getParameter("fullName");
-        Resume r = storage.get(uuid);
-        r.setFullName(fullName);
-        for (ContactType type : ContactType.values()) {
-            String value = request.getParameter(type.name());
-            if(HtmlUtil.isEmpty(value)) {
-                r.getContacts().remove(type);
-            } else {
-                r.setContact(type, value);
-            }
+
+        Resume r;
+        boolean actionAdd = false;
+        if(uuid == null || uuid.trim().length()==0) {
+            r = new Resume(fullName);
+            actionAdd = true;
+        } else {
+            r = new Resume(uuid, fullName);
         }
 
         for (SectionType type : SectionType.values()) {
@@ -57,9 +56,9 @@ public class ResumeServlet extends HttpServlet {
                     case EDUCATION:
                         List<Organisation> orgs = new ArrayList<>();
                         String[] urls = request.getParameterValues(type.name() + "url");
-                        for(int i = 0; i < values.length; i ++) {
+                        for (int i = 0; i < values.length; i++) {
                             String name = values[i];
-                            if(!HtmlUtil.isEmpty(name)) {
+                            if (!HtmlUtil.isEmpty(name)) {
                                 List<Organisation.Position> positions = new ArrayList<>();
                                 String pfx = type.name() + i;
                                 String[] startDates = request.getParameterValues(pfx + "startDate");
@@ -67,7 +66,7 @@ public class ResumeServlet extends HttpServlet {
                                 String[] titles = request.getParameterValues(pfx + "title");
                                 String[] descriptions = request.getParameterValues(pfx + "description");
                                 for (int j = 0; j < titles.length; j++) {
-                                    if(!HtmlUtil.isEmpty(titles[j])) {
+                                    if (!HtmlUtil.isEmpty(titles[j])) {
                                         positions.add(new Organisation.Position(DateUtil.parse(startDates[j]), DateUtil.parse(endDates[j]), titles[j], descriptions[j]));
                                     }
                                 }
@@ -79,7 +78,13 @@ public class ResumeServlet extends HttpServlet {
                 }
             }
         }
-        storage.update(r);
+        if (actionAdd) {
+            if(fullName.trim().length() != 0) {
+                storage.save(r);
+            }
+        }else{
+            storage.update(r);
+        }
         response.sendRedirect("resume");
     }
 
@@ -100,21 +105,43 @@ public class ResumeServlet extends HttpServlet {
             case "view":
                 r = storage.get(uuid);
                 break;
+            case "add":
+                r = Resume.EMPTY;
+                break;
             case "edit":
                 r = storage.get(uuid);
-                for (SectionType type : new SectionType[]{SectionType.EXPERIENCE, SectionType.EDUCATION}) {
-                    OrganisationSection section = (OrganisationSection) r.getSection(type);
-                    List<Organisation> emptyFirstOrganisations = new ArrayList<>();
-                    emptyFirstOrganisations.add(Organisation.EMPTY);
-                    if(section != null) {
-                        for (Organisation org : section.getOrganisations()) {
-                            List<Organisation.Position> emptyFirstPositions = new ArrayList<>();
-                            emptyFirstPositions.add(Organisation.Position.EMPTY);
-                            emptyFirstPositions.addAll(org.getPositions());
-                            emptyFirstOrganisations.add(new Organisation(org.getHomePage(), emptyFirstPositions));
-                        }
+                for (SectionType type : SectionType.values()) {
+                    Section section = r.getSection(type);
+                    switch (type) {
+                        case OBJECTIVE:
+                        case PERSONAL:
+                            if (section == null) {
+                                section = TextSection.EMPTY;
+                            }
+                            break;
+                        case ACHIEVEMENT:
+                        case QUALIFICATIONS:
+                            if (section == null) {
+                                section = ListSection.EMPTY;
+                            }
+                            break;
+                        case EXPERIENCE:
+                        case EDUCATION:
+                            OrganisationSection orgSection = (OrganisationSection) section;
+                            List<Organisation> emptyFirstOrganisations = new ArrayList<>();
+                            emptyFirstOrganisations.add(Organisation.EMPTY);
+                            if (orgSection == null) {
+                                for (Organisation org : orgSection.getOrganisations()) {
+                                    List<Organisation.Position> emptyFirstPositions = new ArrayList<>();
+                                    emptyFirstPositions.add(Organisation.Position.EMPTY);
+                                    emptyFirstPositions.addAll(org.getPositions());
+                                    emptyFirstOrganisations.add(new Organisation(org.getHomePage(), emptyFirstPositions));
+                                }
+                            }
+                            section = new OrganisationSection(emptyFirstOrganisations);
+                            break;
                     }
-                    r.setSection(type, new OrganisationSection(emptyFirstOrganisations));
+                    r.setSection(type, section);
                 }
                 break;
             default:
