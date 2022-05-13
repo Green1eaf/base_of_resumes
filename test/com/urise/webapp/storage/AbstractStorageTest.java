@@ -10,23 +10,13 @@ import org.junit.Test;
 import java.io.File;
 import java.util.*;
 
-import static com.urise.webapp.ResumeTestData.createResume;
+import static com.urise.webapp.TestData.*;
 import static org.junit.Assert.assertEquals;
 
 public abstract class AbstractStorageTest {
     protected static final File STORAGE_DIR = Config.get().getStorageDir();
 
     protected Storage storage;
-
-    private static final String UUID_1 = UUID.randomUUID().toString();
-    private static final String UUID_2 = UUID.randomUUID().toString();
-    private static final String UUID_3 = UUID.randomUUID().toString();
-    private static final String UUID_4 = UUID.randomUUID().toString();
-
-    private static final Resume R1 = new Resume(UUID_1, "Ivanov Ivan");    //createResume(UUID_1, "Petrov Ivan");
-    private static final Resume R2 = createResume(UUID_2, "Ivanova Elena");
-    private static final Resume R3 = createResume(UUID_3, "Petrov Ivan");
-    private static final Resume R4 = createResume(UUID_4, "name");
 
     protected AbstractStorageTest(Storage storage) {
         this.storage = storage;
@@ -54,6 +44,9 @@ public abstract class AbstractStorageTest {
     @Test
     public void update() {
         Resume newResume = new Resume(UUID_1, "New Name");
+        newResume.setContact(ContactType.MAIL, "mail@google.com");
+        newResume.setContact(ContactType.SKYPE, "newSkype");
+        newResume.setContact(ContactType.PHONE, "+7 921 222-22-22");
         storage.update(newResume);
         assertEquals(newResume, storage.get(UUID_1));
     }

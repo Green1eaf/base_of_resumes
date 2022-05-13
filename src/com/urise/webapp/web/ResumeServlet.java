@@ -3,22 +3,23 @@ package com.urise.webapp.web;
 import com.urise.webapp.Config;
 import com.urise.webapp.model.*;
 import com.urise.webapp.storage.Storage;
+import com.urise.webapp.util.DateUtil;
+import com.urise.webapp.util.HtmlUtil;
 
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.*;
-import java.util.stream.Collectors;
-
-import static com.urise.webapp.model.SectionType.*;
 
 public class ResumeServlet extends HttpServlet {
     private Storage storage;
 
     @Override
-    public void init() {
+    public void init(ServletConfig config) throws ServletException {
+        super.init(config);
         storage = Config.get().getStorage();
     }
 
@@ -30,30 +31,51 @@ public class ResumeServlet extends HttpServlet {
         r.setFullName(fullName);
         for (ContactType type : ContactType.values()) {
             String value = request.getParameter(type.name());
-            if (value != null && value.trim().length() != 0) {
-                r.addContact(type, value);
-            } else {
+            if(HtmlUtil.isEmpty(value)) {
                 r.getContacts().remove(type);
+            } else {
+                r.setContact(type, value);
             }
         }
 
         for (SectionType type : SectionType.values()) {
             String value = request.getParameter(type.name());
-            if (value == null || value.trim().length() == 0) {
+            String[] values = request.getParameterValues(type.name());
+            if (HtmlUtil.isEmpty(value) && values.length < 2) {
                 r.getSections().remove(type);
             } else {
-                switch (type.name()) {
-                    case "PERSONAL":
-                    case "OBJECTIVE":
-                        r.addSection(type, new TextSection(value));
+                switch (type) {
+                    case PERSONAL:
+                    case OBJECTIVE:
+                        r.setSection(type, new TextSection(value));
                         break;
-                    case "ACHIEVEMENT":
-                    case "QUALIFICATIONS":
-                        r.addSection(type, new ListSection(value.split("\n")));
+                    case ACHIEVEMENT:
+                    case QUALIFICATIONS:
+                        r.setSection(type, new ListSection(value.split("\\n")));
                         break;
-                    case "EXPERIENCE":
-                    case "EDUCATION":
-                        r.getSections().remove(type);
+                    case EXPERIENCE:
+                    case EDUCATION:
+                        List<Organisation> orgs = new ArrayList<>();
+                        String[] urls = request.getParameterValues(type.name() + "url");
+                        for(int i = 0; i < values.length; i ++) {
+                            String name = values[i];
+                            if(!HtmlUtil.isEmpty(name)) {
+                                List<Organisation.Position> positions = new ArrayList<>();
+                                String pfx = type.name() + i;
+                                String[] startDates = request.getParameterValues(pfx + "startDate");
+                                String[] endDates = request.getParameterValues(pfx + "endDate");
+                                String[] titles = request.getParameterValues(pfx + "title");
+                                String[] descriptions = request.getParameterValues(pfx + "description");
+                                for (int j = 0; j < titles.length; j++) {
+                                    if(!HtmlUtil.isEmpty(titles[j])) {
+                                        positions.add(new Organisation.Position(DateUtil.parse(startDates[j]), DateUtil.parse(endDates[j]), titles[j], descriptions[j]));
+                                    }
+                                }
+                                orgs.add(new Organisation(new Link(name, urls[i]), positions));
+                            }
+                        }
+                        r.setSection(type, new OrganisationSection(orgs));
+                        break;
                 }
             }
         }
@@ -77,10 +99,23 @@ public class ResumeServlet extends HttpServlet {
                 return;
             case "view":
                 r = storage.get(uuid);
-                removeSpaces(r); //NPE here
                 break;
             case "edit":
                 r = storage.get(uuid);
+                for (SectionType type : new SectionType[]{SectionType.EXPERIENCE, SectionType.EDUCATION}) {
+                    OrganisationSection section = (OrganisationSection) r.getSection(type);
+                    List<Organisation> emptyFirstOrganisations = new ArrayList<>();
+                    emptyFirstOrganisations.add(Organisation.EMPTY);
+                    if(section != null) {
+                        for (Organisation org : section.getOrganisations()) {
+                            List<Organisation.Position> emptyFirstPositions = new ArrayList<>();
+                            emptyFirstPositions.add(Organisation.Position.EMPTY);
+                            emptyFirstPositions.addAll(org.getPositions());
+                            emptyFirstOrganisations.add(new Organisation(org.getHomePage(), emptyFirstPositions));
+                        }
+                    }
+                    r.setSection(type, new OrganisationSection(emptyFirstOrganisations));
+                }
                 break;
             default:
                 throw new IllegalArgumentException("Action " + action + " is illegal");
@@ -89,17 +124,5 @@ public class ResumeServlet extends HttpServlet {
         request.getRequestDispatcher(
                 ("view".equals(action) ? "WEB-INF/jsp/view.jsp" : "WEB-INF/jsp/edit.jsp")
         ).forward(request, response);
-    }
-
-    public static void removeSpaces(Resume r) {
-        if (r.getSections() != null && r.getContacts()!=null) {
-            for (SectionType type : values()) {
-                if (type == ACHIEVEMENT || type == QUALIFICATIONS) {
-                    Section ls = r.getSections().get(type);
-                    List<String> list = ((ListSection) ls).getItems().stream().map(String::trim).filter(s -> s.length() > 1).collect(Collectors.toList());
-                    r.addSection(type, new ListSection(list));
-                }
-            }
-        }
     }
 }

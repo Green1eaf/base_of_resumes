@@ -21,8 +21,8 @@ public class DataStreamSerializer implements StreamSerializer {
                 dos.writeUTF(entry.getKey().name());
                 dos.writeUTF(entry.getValue());
             });
-            Map<SectionType, Section> sections = r.getSections();
-            writeCollection(dos, sections.entrySet(), entry -> {
+
+            writeCollection(dos, r.getSections().entrySet(), entry -> {
                 SectionType key = entry.getKey();
                 Section section = entry.getValue();
                 dos.writeUTF(key.name());
@@ -64,17 +64,17 @@ public class DataStreamSerializer implements StreamSerializer {
             String uuid = dis.readUTF();
             String fullName = dis.readUTF();
             Resume resume = new Resume(uuid, fullName);
-            readResumePart(dis, () -> resume.addContact(ContactType.valueOf(dis.readUTF()), dis.readUTF()));
-            readResumePart(dis, () -> {
+            readItems(dis, () -> resume.setContact(ContactType.valueOf(dis.readUTF()), dis.readUTF()));
+            readItems(dis, () -> {
                 SectionType key = SectionType.valueOf(dis.readUTF());
-                resume.addSection(key, readCollection(dis, key));
+                resume.setSection(key, readSection(dis, key));
             });
             return resume;
         }
     }
 
-    private Section readCollection(DataInputStream dis, SectionType key) throws IOException {
-        switch (key) {
+    private Section readSection(DataInputStream dis, SectionType sectionType) throws IOException {
+        switch (sectionType) {
             case PERSONAL:
             case OBJECTIVE:
                 return new TextSection(dis.readUTF());
@@ -98,11 +98,11 @@ public class DataStreamSerializer implements StreamSerializer {
         return LocalDate.of(dis.readInt(), dis.readInt(), 1);
     }
 
-    private interface ItemReader<T> {
+    private interface ElementReader<T> {
         T read() throws IOException;
     }
 
-    private <T> List<T> readList(DataInputStream dis, ItemReader<T> reader) throws IOException {
+    private <T> List<T> readList(DataInputStream dis, ElementReader<T> reader) throws IOException {
         int size = dis.readInt();
         List<T> result = new ArrayList<>(size);
         for (int i = 0; i < size; i++) {
@@ -111,25 +111,25 @@ public class DataStreamSerializer implements StreamSerializer {
         return result;
     }
 
-    private interface ItemWriter<T> {
+    private interface ElementWriter<T> {
         void write(T t) throws IOException;
     }
 
-    private <T> void writeCollection(DataOutputStream dos, Collection<T> collection, ItemWriter<T> writer) throws IOException {
+    private <T> void writeCollection(DataOutputStream dos, Collection<T> collection, ElementWriter<T> writer) throws IOException {
         dos.writeInt(collection.size());
         for (T item : collection) {
             writer.write(item);
         }
     }
 
-    private interface PartReader {
-        void read() throws IOException;
+    private interface elementProcessor {
+        void process() throws IOException;
     }
 
-    private void readResumePart(DataInputStream dis, PartReader reader) throws IOException {
+    private void readItems(DataInputStream dis, elementProcessor processor) throws IOException {
         int size = dis.readInt();
         for (int i = 0; i < size; i++) {
-            reader.read();
+            processor.process();
         }
     }
 }
